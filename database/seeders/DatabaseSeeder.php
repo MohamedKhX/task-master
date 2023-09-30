@@ -6,10 +6,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-<<<<<<< HEAD
-=======
 use Illuminate\Support\Facades\Password;
->>>>>>> eed281a2e38e621836b7c0e7d46b50ca2aa8ee25
 
 class DatabaseSeeder extends Seeder
 {
