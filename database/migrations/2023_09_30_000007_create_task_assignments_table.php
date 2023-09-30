@@ -20,6 +20,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('task_id')->references('id')->on('tasks');
+            $table->unique(['user_id', 'task_id']);
         });
     }
 
