@@ -8,6 +8,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+    <wireui:scripts />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
@@ -16,6 +17,10 @@
 <body
     x-data="{'loaded': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
     style="background-color: rgb(241, 245, 249);" >
+
+    {{-- Start Dialogs --}}
+    @stack('dialogs')
+    {{-- End Dialogs --}}
 
     {{-- Start Page Wrapper --}}
     <div class="flex h-screen overflow-hidden">
@@ -45,20 +50,17 @@
             </x-dashboard.sidebar_menu_group>
             <x-dashboard.sidebar_menu_group title="Projects">
 
-                <x-dashboard.sidebar_menu_item
-                    name="Project 1"
-                    icon-name="check-circle"
-                    icon-fills="fill-danger"
-                    href="{{ route('dashboard') }}"
-                />
-
-                <x-dashboard.sidebar_menu_item
-                    name="Project 2"
-                    icon-name="check-circle"
-                    icon-fills="fill-success"
-                    href="{{ route('dashboard') }}"
-                />
-
+                @foreach($projects as $project)
+                    <x-dashboard.sidebar_menu_item
+                        name="{{ $project->name }}"
+                        icon-name="check-circle"
+                        icon-fills="fill-danger"
+                        type="multi"
+                    >
+                        <x-dashboard.sidebar_menu_multi_item name="Task List" href="{{ route('project.show', $project) }}" />
+                        <x-dashboard.sidebar_menu_multi_item name="Activity" />
+                    </x-dashboard.sidebar_menu_item>
+                @endforeach
 
             </x-dashboard.sidebar_menu_group>
             <x-dashboard.sidebar_menu_group title="Team">
@@ -90,7 +92,7 @@
 
             {{-- Start Header --}}
 
-                <header class="sticky top-0 z-999 flex w-full bg-white drop-shadow-1">
+                <header class="sticky top-0 z-0 flex w-full bg-white drop-shadow-1">
 
                 <div class="flex flex-grow items-center justify-between lg:justify-end py-4 px-4 shadow-2 md:px-6 2xl:px-11">
 

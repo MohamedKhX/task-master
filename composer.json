@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
+        "power-components/livewire-powergrid": "*",
         "wireui/wireui": "^1.18"
     },
     "require-dev": {

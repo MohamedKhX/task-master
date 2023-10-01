@@ -25,6 +25,10 @@ class Project extends Model
         'team_id',
     ];
 
+    protected $casts = [
+      'task_status_template' => 'array'
+    ];
+
     public function manager(): BelongsTo
     {
         return $this->belongsTo(User::class, 'manager_id');
