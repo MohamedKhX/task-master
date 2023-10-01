@@ -1,64 +1,7 @@
 <x-dashboard-layout>
     {{-- Task Dialog --}}
     @push('dialogs')
-        <x-dialog id="custom" title="Add New Task">
-            <div class="mt-5 flex flex-col gap-5">
-                <x-input label="Task Name" placeholder="Enter the task name..." x-model="name" />
-                <x-select
-                    label="Select Status"
-                    placeholder="Select one status"
-                    :options="$project->task_status_template"
-                />
-                <x-select
-                    label="Select priority"
-                    placeholder="Select one priority"
-                    :options="\App\Enums\TaskPriority::getValues()"
-                />
-                <x-select
-
-                    label="Assign To:"
-
-                    wire:model.defer="asyncSearchUser"
-
-                    placeholder="Select some user"
-
-                    :template="[
-
-                            'name'   => 'user-option',
-
-                            'config' => ['src' => 'profile_image']
-
-                        ]"
-
-                    option-label="name"
-
-                    option-value="id"
-
-                    option-description="email"
-                    multiselect="true"
-                />
-                <x-datetime-picker
-
-                    label="Select Start Date"
-
-                    placeholder="Start date of the task"
-
-                    wire:model.defer="normalPicker"
-
-                />
-                <x-datetime-picker
-
-                    label="Select End Date"
-
-                    placeholder="End date of the task"
-
-                    wire:model.defer="normalPicker"
-
-                />
-
-            </div>
-
-        </x-dialog>
+        <livewire:task-editor-modal :project="$project" />
     @endpush
     {{-- End Task Dialog --}}
 
@@ -68,26 +11,7 @@
         <div class="flex gap-8 mt-5">
             <div class="w-3/12 flex flex-col gap-5 bg-white shadow-2 p-5">
                 <div class="flex flex-col gap-5">
-                    <x-button  outline icon="plus" primary label="Add New Task" x-on:click="$wireui.confirmDialog({
-                id: 'custom',
-                icon: 'question',
-                accept: {
-                    label: 'Yes, save it',
-                    execute: () => window.$wireui.notify({
-                        'title': 'Profile name saved',
-                        'description': `Good by, ${name}`,
-                        'icon': 'success'
-                    })
-                },
-                reject: {
-                    label: 'No, cancel',
-                    execute: () => window.$wireui.notify({
-                        'title': 'You not confirmed',
-                        'description': `Good by, ${name}`,
-                        'icon': 'error'
-                    })
-                }
-            })" />
+                    <x-button  outline icon="plus" primary label="Add New Task" @click="$openModal('taskEditorModal')" />
                     <ul class="p-3 flex flex-col gap-5">
                         <li>
                             <a class="flex items-center gap-2 text-secondary-600 text-sm hover:text-primary-600 transition" href="">
