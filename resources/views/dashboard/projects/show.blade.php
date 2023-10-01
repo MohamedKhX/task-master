@@ -4,11 +4,7 @@
         <livewire:task-editor-modal :project="$project" />
     @endpush
     {{-- End Task Dialog --}}
-
-
-    <div class="p-5">
-        <h3 class="text-xl font-semibold">Task List</h3>
-        <div class="flex gap-8 mt-5">
+{{--
             <div class="w-3/12 flex flex-col gap-5 bg-white shadow-2 p-5">
                 <div class="flex flex-col gap-5">
                     <x-button  outline icon="plus" primary label="Add New Task" @click="$openModal('taskEditorModal')" />
@@ -67,7 +63,11 @@
                     </ul>
                 </div>
             </div>
-            <div class="w-9/12">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab accusamus atque aut beatae blanditiis commodi corporis dolore eaque est facilis illum magni maxime minima nemo nostrum numquam officia reiciendis rem sed similique sunt vel, voluptatem. Harum hic maxime nam. Ab aliquid cum debitis est et labore praesentium quod unde ut.</div>
+--}}
+    <div class="p-5">
+        <h3 class="text-xl font-semibold">Task List</h3>
+        <div class="">
+                <livewire:task-table />
         </div>
     </div>
 

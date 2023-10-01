@@ -7,6 +7,12 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <style>
+        table {
+            background-color: white !important;
+        }
+    </style>
+
     <!-- Scripts -->
     <wireui:scripts />
     @vite(['resources/css/app.css', 'resources/js/app.js'])

@@ -6,7 +6,7 @@
                 <x-select
                     label="Select Status"
                     placeholder="Select one status"
-                    :options="$project->task_status_template"
+                    :options="(json_decode($project->task_status_template))"
                     class="flex-grow"
                 />
                 <x-select
@@ -57,13 +57,12 @@
                 </div>
             </div>
             <x-textarea wire:model="comment" label="Description" placeholder="Unleash your thoughts and describe the task in vivid detail..." />
-
         </div>
 
         <x-slot name="footer">
             <div class="flex justify-end gap-x-4">
                 <x-button flat label="Cancel" x-on:click="close" />
-                <x-button primary label="I Agree" />
+                <x-button primary label="Create" />
             </div>
         </x-slot>
     </x-card>
