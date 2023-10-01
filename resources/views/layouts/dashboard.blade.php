@@ -83,8 +83,6 @@
                     </div>
                 </x-dashboard.sidebar_menu_item>
             </x-dashboard.sidebar_menu_group>
-
-
         </x-dashboard.sidebar>
         {{-- End Sidebar --}}
 

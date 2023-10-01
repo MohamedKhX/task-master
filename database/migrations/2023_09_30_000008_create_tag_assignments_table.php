@@ -19,6 +19,9 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('tag_id')->references('id')->on('tags');
+
+            $table->unique(['tag_id', 'assigment_id', 'assigment_type']);
+
             $table->index(['assignment_id', 'assignment_type']);
         });
     }

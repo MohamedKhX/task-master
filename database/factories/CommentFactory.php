@@ -12,7 +12,9 @@ class CommentFactory extends Factory
     public function definition(): array
     {
         return [
-
+            'body' => $this->faker->paragraph,
+            'type' => $this->faker->randomElement(['Task', 'Project']),
+            'type_id' => $this->faker->randomNumber(),
         ];
     }
 }

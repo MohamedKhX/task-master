@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('team_id')->references('id')->on('teams');
+            $table->unique(['user_id', 'team_id']);
             $table->timestamps();
         });
     }
