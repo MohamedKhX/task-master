@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tag_assignments', function (Blueprint $table) {
+        Schema::create('taggables', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tag_id');
-            $table->foreignId('assignment_id');
-            $table->enum('assignment_type', ['Task', 'Project']);
+            $table->foreignId('taggable_id');
+            $table->string('taggable_type');
             $table->timestamps();
 
             $table->foreign('tag_id')->references('id')->on('tags');
 
-            $table->unique(['tag_id', 'assignment_id', 'assignment_type']);
+            $table->unique(['tag_id', 'taggable_id', 'taggable_type']);
 
-            $table->index(['assignment_id', 'assignment_type']);
+            $table->index(['taggable_id', 'taggable_type']);
         });
     }
 
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tag_assignments');
+        Schema::dropIfExists('taggables');
     }
 };

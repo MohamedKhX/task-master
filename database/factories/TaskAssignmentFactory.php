@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\TaskAssignment;
+use App\Models\Assignment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TaskAssignmentFactory extends Factory
 {
-    protected $model = TaskAssignment::class;
+    protected $model = Assignment::class;
 
     public function definition(): array
     {

@@ -13,7 +13,7 @@ class Assignee extends Component
         $this->task = $task;
     }
 
-    public function render(): string
+    public function render()
     {
         return view('components.table.assignee', [
             'task' => $this->task

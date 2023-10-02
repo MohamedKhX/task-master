@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Assignment;
 use App\Models\Project;
-use App\Models\Status;
+use App\Models\Tag;
 use App\Models\Task;
 use App\Models\Team;
 use App\Models\User;
@@ -43,8 +44,6 @@ class DatabaseSeeder extends Seeder
              'manager_id' => $leader->id
          ]);
 
-         Status::factory(10)->create();
-
          for ($i = 1; $i <= 3; $i++)
          {
              Task::factory(5)->create([
@@ -52,6 +51,29 @@ class DatabaseSeeder extends Seeder
              ]);
          }
 
+        Tag::factory(10)->create();
+        $tags = Tag::inRandomOrder()->limit(10)->get();
+        $tasks = Task::inRandomOrder()->limit(20)->get();
 
+        // Create tag assignments
+        foreach ($tasks as $task) {
+            $randomTags = $tags->random(rand(1, 5));
+            $task->tags()->attach($randomTags);
+        }
+
+        // Get some random user and task IDs
+        $userIds = User::pluck('id')->all();
+        $taskIds = Task::pluck('id')->all();
+
+        // Create assignments
+        foreach ($userIds as $userId) {
+            $randomTasks = array_rand($taskIds, rand(1, 5));
+            foreach ((array) $randomTasks as $randomTask) {
+                Assignment::create([
+                    'user_id' => $userId,
+                    'task_id' => $taskIds[$randomTask],
+                ]);
+            }
+        }
     }
 }

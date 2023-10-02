@@ -2,12 +2,22 @@
 
 namespace App\View\Components\Table;
 
+use App\Models\Task;
 use Illuminate\View\Component;
 
 class Status extends Component
 {
-    public function render(): string
+    public Task $task;
+
+    public function __construct(Task $task)
     {
-        return view('components.table.status');
+        $this->task = $task;
+    }
+
+    public function render()
+    {
+        return view('components.table.status', [
+            'task' => $this->task
+        ]);
     }
 }

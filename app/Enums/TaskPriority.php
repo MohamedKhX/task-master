@@ -5,27 +5,25 @@ namespace App\Enums;
 enum TaskPriority
 {
     const LOW = 'Low';
-    const NORMAL = 'Normal';
     const HIGH = 'High';
-    const URGENT = 'Urgent';
+    const Critical = 'Critical';
+
 
     public static function getValues(): array
     {
         return [
             self::LOW,
-            self::NORMAL,
             self::HIGH,
-            self::URGENT,
+            self::Critical,
         ];
     }
 
     public static function colors(): array
     {
         return [
-            self::LOW => 'Positive',
-            self::NORMAL => 'Amber',
-            self::HIGH => 'Orange',
-            self::URGENT => 'Negative',
+            self::LOW => 'positive',
+            self::HIGH => 'warning',
+            self::Critical => 'negative',
         ];
     }
 

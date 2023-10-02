@@ -17,7 +17,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Livewire\Livewire;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Components\Filters\Builders\DateTimePicker;
 use PowerComponents\LivewirePowerGrid\Detail;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
@@ -29,22 +28,7 @@ use PowerComponents\LivewirePowerGrid\Tests\Models\Dish;
 
 final class TaskTable extends PowerGridComponent
 {
-    public string $pro;
-
-    public function sub()
-    {
-        dd($this->priority);
-    }
-
-    public function updated()
-    {
-
-    }
-
-    public function priorityUpdated()
-    {
-        dump('Hi there');
-    }
+    public $customSort = true;
 
     public function template(): ?string
     {
@@ -102,19 +86,26 @@ final class TaskTable extends PowerGridComponent
             ,
             Column::add()
                 ->title('Assignee')
-                ->field('Assignee', 'assignee'),
-
-            Column::add()
-                ->title('Status')
-                ->field('Status', 'status'),
+                ->field('Assignee', 'assignee')
+                ->headerAttribute('text-center'),
 
             Column::add()
                 ->title('Due Date')
-                ->field('DueTime', 'assignee'),
+                ->field('DueTime', 'start_date')
+                ->headerAttribute('text-center')
+                ->sortable(),
+
+            Column::add()
+                ->title('Status')
+                ->field('Status', 'status')
+                ->sortable()
+                ->headerAttribute('text-center'),
+
 
             Column::add()
                 ->title('Priority')
                 ->field('Priority', 'priority')
+                ->headerAttribute('text-center')
                 ->sortable(),
 
         ];

@@ -1,10 +1,5 @@
 <x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
 
-        <x-validation-errors class="mb-4" />
 
         @if (session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
@@ -39,10 +34,9 @@
                     </a>
                 @endif
 
-                <x-button class="ml-4">
+                <button type="submit" class="ml-4">
                     {{ __('Log in') }}
-                </x-button>
+                </button>
             </div>
         </form>
-    </x-authentication-card>
 </x-guest-layout>

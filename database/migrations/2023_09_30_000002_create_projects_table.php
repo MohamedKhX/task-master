@@ -19,8 +19,6 @@ return new class extends Migration
             $table->enum('priority', ['Low', 'Normal', 'High', 'Urgent']);
             $table->decimal('budget', 10, 2)->nullable();
 
-            $table->json('task_status_template');
-
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->timestamp('completed_at')->nullable();
