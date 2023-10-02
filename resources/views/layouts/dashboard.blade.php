@@ -94,11 +94,11 @@
         </x-dashboard.sidebar>
         {{-- End Sidebar --}}
 
-        <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <div class=" relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
 
             {{-- Start Header --}}
 
-                <header class="sticky top-0 z-0 flex w-full bg-white drop-shadow-1">
+                <header class="sticky z-10 top-0 flex w-full bg-white drop-shadow-1">
 
                 <div class="flex flex-grow items-center justify-between lg:justify-end py-4 px-4 shadow-2 md:px-6 2xl:px-11">
 

@@ -66,8 +66,8 @@
 --}}
     <div class="p-5">
         <h3 class="text-xl font-semibold">Task List</h3>
-        <div class="">
-                <livewire:task-table />
+        <div>
+            <livewire:task-table />
         </div>
     </div>
 

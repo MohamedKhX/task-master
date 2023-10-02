@@ -5,11 +5,17 @@ namespace App\Livewire;
 use App\Models\Project;
 use App\Models\Task;
 use App\PowerGridThemes\PowerGridTheme;
+use App\View\Components\Table\Assignee;
+use App\View\Components\Table\DueDate;
+use App\View\Components\Table\Name;
+use App\View\Components\Table\Priority;
+use App\View\Components\Table\Status;
 use App\View\Components\TestX;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Livewire\Livewire;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Components\Filters\Builders\DateTimePicker;
 use PowerComponents\LivewirePowerGrid\Detail;
@@ -23,6 +29,23 @@ use PowerComponents\LivewirePowerGrid\Tests\Models\Dish;
 
 final class TaskTable extends PowerGridComponent
 {
+    public string $pro;
+
+    public function sub()
+    {
+        dd($this->priority);
+    }
+
+    public function updated()
+    {
+
+    }
+
+    public function priorityUpdated()
+    {
+        dump('Hi there');
+    }
+
     public function template(): ?string
     {
         return PowerGridTheme::class;
@@ -52,25 +75,19 @@ final class TaskTable extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('Name', function (Task $task) {
-                return "
-                        <div class='flex flex-row gap-2'>
-                              <span class='text-sm'>$task->name</span>
-                            <div class='flex flex-row gap-2'>
-                                <span class='flex items-center justify-center opacity-75 bg-primary-500 rounded-full text-white text-xs px-2'>
-                                    Tag
-                                </span>
-                                <span class='flex items-center justify-center  opacity-75 bg-danger rounded-full text-white text-xs px-2'>
-                                    Red
-                                </span>
-                            </div>
-                        </div>
-                        ";
+                return Blade::renderComponent(new Name($task));
             })
             ->addColumn('Assignee', function (Task $task) {
-                return Blade::renderComponent(new TestX());
+                return Blade::renderComponent(new Assignee($task));
+            })
+            ->addColumn('Status', function (Task $task) {
+                return Blade::renderComponent(new Status($task));
+            })
+            ->addColumn('Priority', function (Task $task) {
+                return Blade::renderComponent(new Priority($task));
             })
             ->addColumn('DueTime', function (Task $task) {
-                return Blade::renderComponent(new TestX());
+                return Blade::renderComponent(new DueDate($task ));
             });
     }
 
@@ -88,11 +105,18 @@ final class TaskTable extends PowerGridComponent
                 ->field('Assignee', 'assignee'),
 
             Column::add()
+                ->title('Status')
+                ->field('Status', 'status'),
+
+            Column::add()
                 ->title('Due Date')
                 ->field('DueTime', 'assignee'),
 
-            Column::make('Priority', 'priority')
+            Column::add()
+                ->title('Priority')
+                ->field('Priority', 'priority')
                 ->sortable(),
+
         ];
     }
 }

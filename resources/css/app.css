@@ -5,3 +5,7 @@
 [x-cloak] {
     display: none;
 }
+
+#power-grid-table-container {
+    overflow: visible;
+}

@@ -18,4 +18,19 @@ enum TaskPriority
             self::URGENT,
         ];
     }
+
+    public static function colors(): array
+    {
+        return [
+            self::LOW => 'Positive',
+            self::NORMAL => 'Amber',
+            self::HIGH => 'Orange',
+            self::URGENT => 'Negative',
+        ];
+    }
+
+    public static function getColor($priority): ?string
+    {
+        return self::colors()[$priority] ?? null;
+    }
 }

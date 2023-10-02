@@ -25,10 +25,10 @@ class Project extends Model
         'created_by',
         'team_id',
     ];
-
+/*
     protected $casts = [
       'task_status_template' => 'array'
-    ];
+    ];*/
 
     public function manager(): BelongsTo
     {
