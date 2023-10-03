@@ -289,6 +289,7 @@
     </div>
     {{-- End Page Wrapper --}}
 
+    @stack('script')
     @livewireScripts
 </body>
 </html>

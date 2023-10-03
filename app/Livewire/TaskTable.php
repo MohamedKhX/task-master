@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use App\PowerGridThemes\PowerGridTheme;
 use App\View\Components\Table\Assignee;
+use App\View\Components\Table\Details;
 use App\View\Components\Table\DueDate;
 use App\View\Components\Table\Name;
 use App\View\Components\Table\Priority;
@@ -25,28 +26,75 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Tests\Models\Dish;
+use function GuzzleHttp\default_user_agent;
 
 final class TaskTable extends PowerGridComponent
 {
-    public $customSort = true;
+    public Collection $filteredData;
+
+    public ?string $filterTasks = null;
+    public ?string $filterStatus = null;
+    public array $filterTags = [];
+
+    public function updatedFilterTasks(): void
+    {
+        $this->filterData();
+    }
+
+    public function updatedFilterStatus(): void
+    {
+        $this->filterData();
+    }
+
+    public function updatedFilterTags(): void
+    {
+        $this->filterData();
+    }
 
     public function template(): ?string
     {
         return PowerGridTheme::class;
     }
 
+    public function filterData(): void
+    {
+        $this->filteredData = Project::findOrFail(1)
+            ->tasks()
+            ->when($this->filterTasks === 'My Tasks', function ($query){
+                 $query->whereHas('assignments', function ($subQuery) {
+                     $subQuery->where('assignments.user_id', 1);
+                 });
+            })
+            ->when($this->filterStatus, function ($query)  {
+                $query->where('status', $this->filterStatus);
+            })
+            ->when($this->filterTags, function ($query) {
+                $query->whereHas('tags', function ($subQuery) {
+                    $subQuery->whereIn('tag_id', $this->filterTags);
+                });
+            })
+            ->get();
+    }
+
     public function datasource(): ?Collection
     {
-        $project = Project::all()->first();
-        return  $project->tasks;
+
+        if(isset($this->filteredData)) {
+            return $this->filteredData;
+        }
+
+        return Project::first()->tasks;
     }
 
     public function setUp(): array
     {
         return [
-            Header::make()->showSearchInput(),
+            Header::make()
+                ->showSearchInput()
+                ->showToggleColumns()
+                ->includeViewOnBottom('components.table.header'),
             Detail::make()
-                ->view('components.banner')
+                ->view('navigation-menu')
                 ->options(['name' => 'Luan'])
                 ->showCollapseIcon(),
             Footer::make()
@@ -58,6 +106,9 @@ final class TaskTable extends PowerGridComponent
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
+            ->addColumn('Details', function (Task $task) {
+                return Blade::renderComponent(new Details($task));
+            })
             ->addColumn('Name', function (Task $task) {
                 return Blade::renderComponent(new Name($task));
             })
@@ -79,10 +130,17 @@ final class TaskTable extends PowerGridComponent
     {
         return [
             Column::add()
+                ->title('SubTasks')
+                ->field('Details')
+                ->headerAttribute('text-center')
+
+            ,
+            Column::add()
                 ->title('Name')
                 ->searchable()
                 ->sortable()
                 ->field('Name', 'name')
+
             ,
             Column::add()
                 ->title('Assignee')
