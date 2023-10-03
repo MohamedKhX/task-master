@@ -24,6 +24,8 @@
     x-data="{'loaded': true, 'stickyMenu': false, 'sidebarToggle': false, 'scrollTop': false }"
     style="background-color: rgb(241, 245, 249);" >
 
+    <x-notifications />
+
     {{-- Start Dialogs --}}
     @stack('dialogs')
     {{-- End Dialogs --}}

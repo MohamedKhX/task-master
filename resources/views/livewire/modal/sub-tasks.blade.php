@@ -1,6 +1,5 @@
 <x-modal  max-width="6xl" wire:model="subTasksModal">
     <x-card title="Task Editor">
-
         <livewire:task-table />
         <x-slot name="footer">
             <div class="flex justify-end gap-x-4">

@@ -3,6 +3,9 @@
 namespace App\View\Components\Table;
 
 use App\Models\Task;
+use Closure;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
 class Name extends Component
@@ -14,10 +17,11 @@ class Name extends Component
         $this->task = $task;
     }
 
-    public function render(): string
+    public function render(): View|Closure|string
     {
         return view('components.table.name', [
-            'task' => $this->task
+            'task' => $this->task,
+            'name' => Str::limit($this->task->name, 40, '...')
         ]);
     }
 }

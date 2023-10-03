@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Blade;
 
+/**
+ * @method static create(array $array)
+ */
 class Task extends Model
 {
     use HasFactory;

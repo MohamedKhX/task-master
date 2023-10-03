@@ -1,5 +1,5 @@
 <div class="flex justify-center">
-    <x-button.circle secondary icon="clipboard-list"  />
+    <x-button.circle @click="$openModal('subTasksModal');" secondary icon="clipboard-list"  />
 </div>
 
 

@@ -2,28 +2,28 @@
 
 namespace App\Enums;
 
-enum TaskPriority
+enum TaskPriority: string
 {
-    const LOW = 'Low';
-    const HIGH = 'High';
-    const Critical = 'Critical';
+    case LOW      = 'Low';
+    case HIGH     = 'High';
+    case Critical = 'Critical';
 
 
     public static function getValues(): array
     {
         return [
-            self::LOW,
-            self::HIGH,
-            self::Critical,
+            self::LOW->value,
+            self::HIGH->value,
+            self::Critical->value,
         ];
     }
 
     public static function colors(): array
     {
         return [
-            self::LOW => 'positive',
-            self::HIGH => 'warning',
-            self::Critical => 'negative',
+            self::LOW->value => 'positive',
+            self::HIGH->value => 'warning',
+            self::Critical->value => 'negative',
         ];
     }
 

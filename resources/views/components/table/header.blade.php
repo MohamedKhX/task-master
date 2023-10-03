@@ -2,8 +2,8 @@
     <div class="flex my-5 gap-5 bg-white shadow-2 p-5">
         <div class="flex items-center flex-grow gap-5">
             <x-button class="px-12" outline icon="plus" primary label="Add New Task"
-                      {{--@click="$openModal('taskEditorModal')" --}}
-                      wire:click="changeData()"
+                      @click="$openModal('taskEditorModal'); $dispatch('taskCreateMode')"
+
             />
         </div>
         <div class="flex items-center gap-5">

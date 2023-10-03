@@ -3,6 +3,7 @@
 namespace App\View\Components\Table;
 
 use App\Models\Task;
+use Closure;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -17,7 +18,7 @@ class Priority extends Component
         $this->task = $task;
     }
 
-    public function render()
+    public function render(): View|Closure|string
     {
         return view('components.table.priority', [
             'task' => $this->task

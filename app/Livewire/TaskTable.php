@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Traits\TableFilters;
 use App\Models\Project;
 use App\Models\Task;
 use App\PowerGridThemes\PowerGridTheme;
@@ -11,44 +12,33 @@ use App\View\Components\Table\DueDate;
 use App\View\Components\Table\Name;
 use App\View\Components\Table\Priority;
 use App\View\Components\Table\Status;
-use App\View\Components\TestX;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Livewire\Livewire;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Detail;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
-use PowerComponents\LivewirePowerGrid\Exportable;
 use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
-use PowerComponents\LivewirePowerGrid\Tests\Models\Dish;
-use function GuzzleHttp\default_user_agent;
 
 final class TaskTable extends PowerGridComponent
 {
-    public Collection $filteredData;
+    use TableFilters;
 
-    public ?string $filterTasks = null;
-    public ?string $filterStatus = null;
-    public array $filterTags = [];
+    public string $sortField = 'created_at';
 
-    public function updatedFilterTasks(): void
+    public string $sortDirection = 'desc';
+
+    public $listeners = ['task-created', 'task-updated'];
+
+    public function taskCreated(): void
     {
-        $this->filterData();
+        $this->refresh();
     }
 
-    public function updatedFilterStatus(): void
+    public function taskUpdated(): void
     {
-        $this->filterData();
-    }
-
-    public function updatedFilterTags(): void
-    {
-        $this->filterData();
+        $this->refresh();
     }
 
     public function template(): ?string
@@ -56,29 +46,8 @@ final class TaskTable extends PowerGridComponent
         return PowerGridTheme::class;
     }
 
-    public function filterData(): void
-    {
-        $this->filteredData = Project::findOrFail(1)
-            ->tasks()
-            ->when($this->filterTasks === 'My Tasks', function ($query){
-                 $query->whereHas('assignments', function ($subQuery) {
-                     $subQuery->where('assignments.user_id', 1);
-                 });
-            })
-            ->when($this->filterStatus, function ($query)  {
-                $query->where('status', $this->filterStatus);
-            })
-            ->when($this->filterTags, function ($query) {
-                $query->whereHas('tags', function ($subQuery) {
-                    $subQuery->whereIn('tag_id', $this->filterTags);
-                });
-            })
-            ->get();
-    }
-
     public function datasource(): ?Collection
     {
-
         if(isset($this->filteredData)) {
             return $this->filteredData;
         }
@@ -93,10 +62,6 @@ final class TaskTable extends PowerGridComponent
                 ->showSearchInput()
                 ->showToggleColumns()
                 ->includeViewOnBottom('components.table.header'),
-            Detail::make()
-                ->view('navigation-menu')
-                ->options(['name' => 'Luan'])
-                ->showCollapseIcon(),
             Footer::make()
                 ->showPerPage()
                 ->showRecordCount(),

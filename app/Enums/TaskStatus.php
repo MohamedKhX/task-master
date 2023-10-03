@@ -2,28 +2,27 @@
 
 namespace App\Enums;
 
-enum TaskStatus
+enum TaskStatus: string
 {
-    const COMPLETED = 'Completed';
-    const IN_PROGRESS = 'In Progress';
-    const PENDING = 'Pending';
-
+    case COMPLETED   = 'Completed';
+    case IN_PROGRESS = 'In Progress';
+    case PENDING     = 'Pending';
 
     public static function getValues(): array
     {
         return [
-            self::COMPLETED,
-            self::IN_PROGRESS,
-            self::PENDING,
+            self::COMPLETED->value,
+            self::IN_PROGRESS->value,
+            self::PENDING->value,
         ];
     }
 
     public static function colors(): array
     {
         return [
-            self::COMPLETED => 'positive',
-            self::IN_PROGRESS => 'warning',
-            self::PENDING => 'negative',
+            self::COMPLETED->value    => 'positive',
+            self::IN_PROGRESS->value  => 'warning',
+            self::PENDING->value     => 'negative',
         ];
     }
 

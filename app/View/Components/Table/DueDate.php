@@ -3,6 +3,8 @@
 namespace App\View\Components\Table;
 
 use App\Models\Task;
+use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class DueDate extends Component
@@ -12,7 +14,7 @@ class DueDate extends Component
     {
         $this->task = $task;
     }
-    public function render()
+    public function render(): View|Closure|string
     {
         return view('components.table.due-date', [
             'task' => $this->task
