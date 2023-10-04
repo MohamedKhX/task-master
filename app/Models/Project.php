@@ -25,10 +25,6 @@ class Project extends Model
         'created_by',
         'team_id',
     ];
-/*
-    protected $casts = [
-      'task_status_template' => 'array'
-    ];*/
 
     public function manager(): BelongsTo
     {
@@ -48,5 +44,10 @@ class Project extends Model
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function tasksWithoutSubTasks(): HasMany
+    {
+        return $this->hasMany(Task::class)->whereNull('parent_id');
     }
 }

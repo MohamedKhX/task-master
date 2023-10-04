@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Table;
 
-use App\Livewire\Traits\TableFilters;
+use App\Livewire\Table\Traits\TableFilters;
 use App\Models\Project;
 use App\Models\Task;
 use App\PowerGridThemes\PowerGridTheme;
@@ -14,6 +14,7 @@ use App\View\Components\Table\Priority;
 use App\View\Components\Table\Status;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Livewire\Attributes\Url;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Footer;
 use PowerComponents\LivewirePowerGrid\Header;
@@ -21,9 +22,13 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 
-final class TaskTable extends PowerGridComponent
+abstract class TaskTable extends PowerGridComponent
 {
     use TableFilters;
+
+    public ?Project $project = null;
+
+    public ?Task $task = null;
 
     public string $sortField = 'created_at';
 
@@ -41,20 +46,27 @@ final class TaskTable extends PowerGridComponent
         $this->refresh();
     }
 
+    /*
+     * Custom Template.
+     * */
     public function template(): ?string
     {
         return PowerGridTheme::class;
     }
 
+    /*
+     * Data to render in the table.
+     * */
     public function datasource(): ?Collection
     {
-        if(isset($this->filteredData)) {
-            return $this->filteredData;
-        }
+        $this->filterData();
 
-        return Project::first()->tasks;
+        return $this->filteredData;
     }
 
+    /*
+     * Create the main elements for the table
+     * */
     public function setUp(): array
     {
         return [
@@ -68,6 +80,9 @@ final class TaskTable extends PowerGridComponent
         ];
     }
 
+    /*
+     * Custom Columns components.
+     * */
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
@@ -91,15 +106,12 @@ final class TaskTable extends PowerGridComponent
             });
     }
 
+    /*
+     * The Real columns that will be rendered in the table
+     * */
     public function columns(): array
     {
-        return [
-            Column::add()
-                ->title('SubTasks')
-                ->field('Details')
-                ->headerAttribute('text-center')
-
-            ,
+        $columns = [
             Column::add()
                 ->title('Name')
                 ->searchable()
@@ -132,5 +144,15 @@ final class TaskTable extends PowerGridComponent
                 ->sortable(),
 
         ];
+
+        if($this->project) {
+            array_unshift($columns,
+                Column::add()
+                    ->title('SubTasks')
+                    ->field('Details')
+                    ->headerAttribute('text-center'));
+        }
+
+        return $columns;
     }
 }

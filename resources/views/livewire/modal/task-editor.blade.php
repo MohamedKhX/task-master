@@ -1,13 +1,41 @@
 <x-modal
+    {{-- Close Modal on created or updated Task --}}
     @task-created.window="close"
     @task-updated.window="close"
-    wire:model="taskEditorModal">
+
+    {{-- The name of the modal --}}
+    wire:model="taskEditorModal"
+
+    z-index="z-999"
+>
+
     <x-card title="Task Editor">
-        <div class="p-5 py-0 flex flex-col gap-5">
+
+        {{-- On Loading --}}
+        <div class="w-full" wire:loading>
+            <div class="flex gap-3 justify-center">
+                <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                     role="status">
+              <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                  Loading...
+              </span>
+                </div>
+                <span>Loading...</span>
+            </div>
+        </div>
+        {{-- On Loading --}}
+
+        {{-- Start Form --}}
+        <div wire:loading.class="hidden" class="p-5 py-0 flex flex-col gap-5">
+
+            {{-- Start Task Name Input --}}
             <x-input label="Task Name"
                      placeholder="Enter the task name..."
                      wire:model="task_name"
             />
+            {{-- End Task Name Input --}}
+
+            {{-- Start Status And Priority Inputs --}}
             <div class="flex gap-4 w-full">
                 <x-select
                     label="Select Status"
@@ -24,20 +52,37 @@
                     wire:model="task_priority"
                 />
             </div>
-            <x-select
-                label="Assign To:"
-                wire:model.defer="asyncSearchUser"
-                placeholder="Select some user"
-                :template="[
-                            'name'   => 'user-option',
-                            'config' => ['src' => 'profile_image']
-                        ]"
-                option-label="name"
-                option-value="id"
-                option-description="email"
-                multiselect="true"
-            />
+            {{-- End Status And Priority Inputs --}}
 
+            {{-- Start Assignee To Input --}}
+            <div>
+                <x-select
+                    label="Select Relator"
+                    placeholder="Select relator"
+                    wire:model.defer="model"
+                    multiselect
+                >
+                    <x-select.user-option src="https://via.placeholder.com/500" label="People 1" value="1" />
+                    <x-select.user-option src="https://via.placeholder.com/500" label="People 2" value="2" />
+                    <x-select.user-option src="https://via.placeholder.com/500" label="People 3" value="3" />
+                    <x-select.user-option src="https://via.placeholder.com/500" label="People 4" value="4" />
+                </x-select>
+            </div>
+            {{-- End Assignee To Input --}}
+
+            {{-- Start Tags Input --}}
+            <div>
+                <x-select
+                    label="Tags:"
+                    placeholder="Select some user"
+                    option-label="name"
+                    option-value="id"
+                    multiselect="true"
+                />
+            </div>
+            {{-- End Tags Input --}}
+
+            {{-- Start Due Date Inputs --}}
             <div class="flex gap-4">
                 <div class="flex-grow">
                     <x-datetime-picker
@@ -56,12 +101,20 @@
                     />
                 </div>
             </div>
-            <x-textarea
-                wire:model="task_description"
-                label="Description"
-                placeholder="Unleash your thoughts and describe the task in vivid detail..."
-            />
+            {{-- End Due Date Inputs --}}
+
+            {{-- Start Description Textarea --}}
+            <div>
+                <x-textarea
+                    wire:model="task_description"
+                    label="Description"
+                    placeholder="Unleash your thoughts and describe the task in vivid detail..."
+                />
+            </div>
+            {{-- End Description Textarea --}}
+
         </div>
+        {{-- End Form --}}
 
         <x-slot name="footer">
             <div class="flex justify-end gap-x-4">

@@ -30,6 +30,8 @@ class TaskEditor extends Component
     public ?string $task_start_date = null;
     public ?string $task_end_date = null;
 
+    public ?string $task_parent_id = null;
+
     protected $listeners = ['taskEditMode', 'taskCreateMode'];
 
     public function taskEditMode($id): void
@@ -45,7 +47,7 @@ class TaskEditor extends Component
         $this->task_end_date    = $this->task->end_date;
     }
 
-    public function taskCreateMode(): void
+    public function taskCreateMode($parent_id = null): void
     {
         $this->task = null;
         $this->editMode = false;
@@ -56,6 +58,8 @@ class TaskEditor extends Component
         $this->task_description = null;
         $this->task_start_date  = null;
         $this->task_end_date    = null;
+
+        $this->task_parent_id   = $parent_id;
     }
 
     public function rules(): array
@@ -91,7 +95,8 @@ class TaskEditor extends Component
             'description' => $this->task_description,
 
             'project_id' => $this->project->id,
-            'created_by' => auth()->user()->id
+            'created_by' => auth()->user()->id,
+            'parent_id'  => $this->task_parent_id
         ]);
 
         $this->notification()->success(

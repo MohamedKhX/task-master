@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Livewire\Traits;
+namespace App\Livewire\Table\Traits;
 
 use App\Models\Project;
 use Illuminate\Support\Collection;
+use Livewire\Attributes\Url;
 
 trait TableFilters
 {
     public Collection $filteredData;
 
     public ?string $filterTasks = null;
+
     public ?string $filterStatus = null;
+
     public array $filterTags = [];
 
     public function updatedFilterTasks(): void
@@ -30,8 +33,13 @@ trait TableFilters
 
     public function filterData(): void
     {
-        $this->filteredData = Project::findOrFail(1)
-            ->tasks()
+        if($this->project) {
+            $data = $this->project->tasksWithoutSubTasks();
+        } else {
+            $data = $this->task->subTasks();
+        }
+
+        $this->filteredData = $data
             ->when($this->filterTasks === 'My Tasks', function ($query){
                 $query->whereHas('assignments', function ($subQuery) {
                     $subQuery->where('assignments.user_id', 1);

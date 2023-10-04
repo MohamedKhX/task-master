@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Blade;
 
 /**
  * @method static create(array $array)
+ * @method tasks()
  */
 class Task extends Model
 {

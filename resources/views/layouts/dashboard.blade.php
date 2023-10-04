@@ -27,6 +27,7 @@
     <x-notifications />
 
     {{-- Start Dialogs --}}
+    <x-dialog />
     @stack('dialogs')
     {{-- End Dialogs --}}
 
@@ -38,15 +39,9 @@
             <x-dashboard.sidebar_menu_group title="Menu">
 
                 <x-dashboard.sidebar_menu_item
-                    name="Overview"
+                    name="Home"
                     icon-name="home"
                     href="{{ route('dashboard') }}"
-                />
-
-                <x-dashboard.sidebar_menu_item
-                    name="All Tasks"
-                    icon-name="badge-check"
-                    href="{{ route('tasks') }}"
                 />
 
                 <x-dashboard.sidebar_menu_item
@@ -63,11 +58,8 @@
                         name="{{ $project->name }}"
                         icon-name="check-circle"
                         icon-fills="fill-danger"
-                        type="multi"
-                    >
-                        <x-dashboard.sidebar_menu_multi_item name="Task List" href="{{ route('project.show', $project) }}" />
-                        <x-dashboard.sidebar_menu_multi_item name="Activity" />
-                    </x-dashboard.sidebar_menu_item>
+                        href="{{ route('project.show', $project) }}"
+                    />
                 @endforeach
 
             </x-dashboard.sidebar_menu_group>
@@ -83,8 +75,7 @@
 
             {{-- Start Header --}}
 
-                <header class="sticky z-10 top-0 flex w-full bg-white drop-shadow-1">
-
+            <header class="sticky z-10 top-0 flex w-full bg-white drop-shadow-1">
                 <div class="flex flex-grow items-center justify-between lg:justify-end py-4 px-4 shadow-2 md:px-6 2xl:px-11">
 
                     <div class="flex items-center gap-2 sm:gap-4 lg:hidden">
