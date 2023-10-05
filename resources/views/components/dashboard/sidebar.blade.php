@@ -34,8 +34,7 @@
         @persist('nav')
             <nav
                 class="mt-2 py-2 px-4 lg:mt-5 lg:px-6"
-                x-data="{selected: 'Overview'}">
-
+                x-data="{selected: 'Overview' }">
                 {{ $slot }}
 
             </nav>

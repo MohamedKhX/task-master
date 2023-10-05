@@ -9,3 +9,7 @@
 #power-grid-table-container {
     overflow: visible;
 }
+
+table {
+    background-color: white !important;
+}

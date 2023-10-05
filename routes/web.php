@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(\route('dashboard'));
 });
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])
@@ -27,7 +27,5 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         Route::resource('dashboard/project', ProjectController::class);
 });
 
-
-Route::get('tags', function () {
-   return \App\Models\Tag::all();
-})->name('tags');
+Route::view('/dashboard/users/create', 'dashboard.admin.users.create');
+Route::view('/dashboard/profile', 'profile.show');
