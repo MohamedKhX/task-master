@@ -7,8 +7,7 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <wireui:scripts />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
@@ -21,7 +20,7 @@
     <x-notifications />
 
     {{-- Start Dialogs --}}
-    <x-dialog />
+    <x-dialog/>
     @stack('dialogs')
     {{-- End Dialogs --}}
 
@@ -44,8 +43,22 @@
                     href="{{ route('tasks') }}"
                 />
 
+                <x-dashboard.sidebar_menu_item
+                    name="Employees"
+                    icon-name="briefcase"
+                    href="{{ route('employee.index') }}"
+                />
+
+
+
+                <x-dashboard.sidebar_menu_item
+                    name="Teams"
+                    icon-name="hand"
+                    href="{{ route('employee.index') }}"
+                />
+
             </x-dashboard.sidebar_menu_group>
-            <x-dashboard.sidebar_menu_group title="Projects">
+            <x-dashboard.sidebar_menu_group title="Our Projects">
 
                 @foreach($projects as $project)
                     <x-dashboard.sidebar_menu_item
@@ -56,8 +69,13 @@
                     />
                 @endforeach
 
+                    <x-dashboard.sidebar_menu_item
+                        name="Show all projects"
+                        icon-name="dots-horizontal"
+                    />
+
             </x-dashboard.sidebar_menu_group>
-            <x-dashboard.sidebar_menu_group title="Team">
+            <x-dashboard.sidebar_menu_group title="My teams">
                 <x-dashboard.sidebar_menu_item class="flex items-center justify-start ml-4" type="empty">
                     <x-members />
                 </x-dashboard.sidebar_menu_item>
@@ -81,6 +99,7 @@
     {{-- End Page Wrapper --}}
 
     @stack('script')
+    <wireui:scripts />
     @livewireScripts
 </body>
 </html>

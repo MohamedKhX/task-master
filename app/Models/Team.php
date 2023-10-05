@@ -22,11 +22,11 @@ class Team extends Model
 
     public function leader(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'leader_id');
+        return $this->belongsTo(Employee::class, 'leader_id');
     }
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(Employee::class, 'created_by');
     }
 }

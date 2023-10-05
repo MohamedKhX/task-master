@@ -51,7 +51,7 @@ class Task extends Model
 
     public function assignments(): HasMany
     {
-        return $this->hasMany(Assignment::class, 'user_id');
+        return $this->hasMany(Assignment::class, 'employee_id');
     }
 
     public function subTasks(): HasMany
@@ -66,6 +66,6 @@ class Task extends Model
 
     public function createdBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(Employee::class, 'created_by');
     }
 }

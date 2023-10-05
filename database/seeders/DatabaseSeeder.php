@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Assignment;
+use App\Models\Employee;
 use App\Models\Project;
 use App\Models\Tag;
 use App\Models\Task;
@@ -21,27 +22,33 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
          $admin = User::factory()->create([
-             'name' => 'Admin',
              'email' => 'admin@admin.com',
              'password' => Hash::make('password')
          ]);
 
+         $adminEmployee = Employee::factory()->create([
+             'user_id' => $admin->id
+         ]);
+
          $leader = User::factory()->create([
-             'name' => 'MohamedKhX',
              'email' => 'mohamed@gmail.com',
              'password' => Hash::make('password')
          ]);
 
+         $leaderEmployee = Employee::factory()->create([
+             'user_id' => $leader->id
+         ]);
+
          $team = Team::factory()->create([
              'name' => 'Web developers',
-             'created_by' => $admin->id,
-             'leader_id' => $leader->id
+             'created_by' => $adminEmployee->id,
+             'leader_id' => $leaderEmployee->id
          ]);
 
          Project::factory(3)->create([
-             'created_by' => $admin->id,
+             'created_by' => $adminEmployee->id,
              'team_id' => $team->id,
-             'manager_id' => $leader->id
+             'manager_id' => $leaderEmployee->id
          ]);
 
          for ($i = 1; $i <= 3; $i++)
@@ -62,15 +69,15 @@ class DatabaseSeeder extends Seeder
         }
 
         // Get some random user and task IDs
-        $userIds = User::pluck('id')->all();
+        $employeesIds = Employee::pluck('id')->all();
         $taskIds = Task::pluck('id')->all();
 
         // Create assignments
-        foreach ($userIds as $userId) {
+        foreach ($employeesIds as $employeesId) {
             $randomTasks = array_rand($taskIds, rand(1, 5));
             foreach ((array) $randomTasks as $randomTask) {
                 Assignment::create([
-                    'user_id' => $userId,
+                    'employee_id' => $employeesId,
                     'task_id' => $taskIds[$randomTask],
                 ]);
             }

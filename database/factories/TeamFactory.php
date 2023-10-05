@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,8 +24,8 @@ class TeamFactory extends Factory
             'department' => $this->faker->word,
             'location' => $this->faker->city,
             'active' => $this->faker->boolean,
-            'leader_id' => User::factory()->create()->id,
-            'created_by' => User::factory()->create()->id,
+            'leader_id' => Employee::factory()->create()->id,
+            'created_by' => Employee::factory()->create()->id,
         ];
     }
 }

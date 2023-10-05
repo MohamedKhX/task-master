@@ -23,8 +23,8 @@ return new class extends Migration
             $table->foreignId('leader_id');
             $table->foreignId('created_by');
 
-            $table->foreign('leader_id')->references('id')->on('users');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('leader_id')->references('id')->on('employees');
+            $table->foreign('created_by')->references('id')->on('employees');
         });
     }
 

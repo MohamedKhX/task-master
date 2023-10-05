@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('employee_id');
             $table->foreignId('task_id');
 
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('employee_id')->references('id')->on('employees');
             $table->foreign('task_id')->references('id')->on('tasks');
-            $table->unique(['user_id', 'task_id']);
+            $table->unique(['employee_id', 'task_id']);
         });
     }
 

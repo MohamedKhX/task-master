@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
 use App\Models\Project;
 use App\Models\Team;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ProjectFactory extends Factory
@@ -21,8 +21,8 @@ class ProjectFactory extends Factory
             'budget' => $this->faker->optional()->randomFloat(2, 0, 100000),
             'start_date' => $this->faker->optional()->dateTime(),
             'end_date' => $this->faker->optional()->dateTime(),
-            'created_by' => User::factory()->create()->id,
-            'manager_id' => User::factory()->create()->id,
+            'created_by' => Employee::factory()->create()->id,
+            'manager_id' => Employee::factory()->create()->id,
             'team_id' => Team::factory()->create()->id,
         ];
     }

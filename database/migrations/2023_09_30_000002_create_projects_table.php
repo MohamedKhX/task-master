@@ -29,8 +29,8 @@ return new class extends Migration
             $table->foreignId('manager_id');
             $table->foreignId('team_id');
 
-            $table->foreign('manager_id')->references('id')->on('users');
-            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('manager_id')->references('id')->on('employees');
+            $table->foreign('created_by')->references('id')->on('employees');
             $table->foreign('team_id')->references('id')->on('teams');
         });
     }
