@@ -13,14 +13,15 @@ class Employee extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
         'job_role',
         'bio',
         'profile_photo_path'
     ];
 
-   /* protected $appends = [
-        'profile_photo_url',
-    ];*/
+    protected $with = [
+      'user'
+    ];
 
     public function user(): BelongsTo
     {

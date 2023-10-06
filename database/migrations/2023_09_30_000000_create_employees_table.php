@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('job_role');
-            $table->text('bio');
+            $table->string('name', 100);
+            $table->string('job_role', 50)->nullable();
+            $table->text('bio')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
 
             $table->foreignId('user_id');
 
-            $table->foreign('user_id')->references('id')->on('employees');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamps();
         });

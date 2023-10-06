@@ -99,7 +99,8 @@
     {{-- End Page Wrapper --}}
 
     @stack('script')
-    <wireui:scripts />
+        <wireui:scripts />
+    @endpersist
     @livewireScripts
 </body>
 </html>

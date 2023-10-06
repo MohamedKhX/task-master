@@ -22,34 +22,22 @@ final class Employees extends PowerGridComponent
 {
     use Actions;
 
-    public function confirmDelete(): void
+    public string $sortField = 'created_at';
+
+    public string $sortDirection = 'desc';
+
+    public $listeners = ['employee-created', 'employee-updated'];
+
+    public function employeeCreated(): void
     {
-        // use a simple syntax
-
-        $this->dialog()->confirm([
-
-            'title'       => 'Are you Sure?',
-
-            'description' => 'To delete the Employee?',
-
-            'icon'        => 'x',
-
-            'accept'      => [
-
-                'label'  => 'Delete It!',
-
-                'method' => 'save',
-
-                'params' => 'Saved',
-
-            ],
-
-            'reject' => [
-                'label'  => 'Nope, i want my employee',
-            ],
-
-        ]);
+        $this->refresh();
     }
+
+    public function employeeUpdated(): void
+    {
+        $this->refresh();
+    }
+
 
     public function template(): ?string
     {
@@ -75,8 +63,13 @@ final class Employees extends PowerGridComponent
     {
         return [
             Button::add('new-modal')
-                ->slot('Create New Employee')
-                ->class('outline-none inline-flex justify-center items-center group transition-all ease-in duration-150 focus:ring-2 focus:ring-offset-2 hover:shadow-sm disabled:opacity-80 disabled:cursor-not-allowed rounded gap-x-2 text-sm px-4 py-2     ring-primary-500 text-white bg-primary-500 hover:bg-primary-600 hover:ring-primary-600 dark:ring-offset-slate-800 dark:bg-primary-700 dark:ring-primary-700 dark:hover:bg-primary-600 dark:hover:ring-primary-600')
+                    ->render(function () {
+                        return Blade::render(<<<HTML
+                            <x-button primary label="Create new employee"
+                                      @click="\$openModal('employeeEditorModal'); \$dispatch('employeeCreateMode')"
+                            />
+                        HTML);
+                    })
             ,
         ];
     }
@@ -93,7 +86,7 @@ final class Employees extends PowerGridComponent
                                 method: 'delete',
                                 iconBackground: 'white',
                                 params: 1}"
-                                class="text-danger cursor-pointer">
+                              class="text-danger cursor-pointer">
                                 Delete
                           </a>
                     HTML);
@@ -111,7 +104,16 @@ final class Employees extends PowerGridComponent
                     </div>
                   HTML;
             })
-            ->addColumn('name')
+            ->addColumn('name', function ($entry) {
+                return Blade::render(<<<HTML
+                    <span class="cursor-pointer"
+                     @click="\$openModal('employeeEditorModal');
+                             \$dispatch('employeeEditMode', {id: '{{ $entry->id }}'})"
+                    >
+                           $entry->name
+                    </span>
+                HTML);
+            })
             ->addColumn('job_role')
             ->addColumn('created_at_formatted', function ($entry) {
                 return Carbon::parse($entry->created_at)->format('d/m/Y');
@@ -125,14 +127,14 @@ final class Employees extends PowerGridComponent
                 ->title('Photo')
                 ->field('profile_photo'),
 
-            Column::make('Name', 'name')
+            Column::add()
+                ->title('Name')
+                ->field('name')
                 ->searchable()
-                ->sortable()
-                ->editOnClick(),
+                ->sortable(),
 
             Column::make('Job role', 'job_role')
-                ->sortable()
-                ->editOnClick(),
+                ->sortable(),
 
             Column::make('Created', 'created_at_formatted')
                     ->sortable(),
