@@ -50,11 +50,10 @@
                 />
 
 
-
                 <x-dashboard.sidebar_menu_item
                     name="Teams"
                     icon-name="hand"
-                    href="{{ route('employee.index') }}"
+                    href="{{ route('team.index') }}"
                 />
 
             </x-dashboard.sidebar_menu_group>
@@ -70,7 +69,7 @@
                 @endforeach
 
                     <x-dashboard.sidebar_menu_item
-                        name="Show all projects"
+                        name="All Projects"
                         icon-name="dots-horizontal"
                     />
 
@@ -99,8 +98,7 @@
     {{-- End Page Wrapper --}}
 
     @stack('script')
-        <wireui:scripts />
-    @endpersist
+    <wireui:scripts />
     @livewireScripts
 </body>
 </html>

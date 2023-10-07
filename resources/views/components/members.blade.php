@@ -3,7 +3,7 @@
     <div class="flex  -space-x-2">
         @forelse($members as $member)
             <button class="h-8 w-8 rounded-full border-2 border-white dark:border-boxdark">
-                <img src="https://demo.tailadmin.com/src/images/user/user-07.png" alt="User">
+                <img src="{{ $member->employee->avatarPath }}" alt="User">
             </button>
         @empty
             <span>Not Assigned</span>

@@ -16,9 +16,10 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('job_role', 50)->nullable();
             $table->text('bio')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('avatar_path', 2048)->nullable();
 
             $table->foreignId('user_id');
+            $table->foreignId('team_id')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users');
 

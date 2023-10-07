@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TeamsController;
 use Illuminate\Support\Facades\Route;
 use Laravolt\Avatar\Facade as Avatar;
 
@@ -26,8 +27,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
         Route::get('dashboard/tasks', [DashboardController::class, 'tasks'])->name('tasks');
 
-        Route::resource('dashboard/project', ProjectController::class);
+        Route::resource('dashboard/project',  ProjectController::class);
         Route::resource('dashboard/employee', EmployeesController::class);
+        Route::resource('dashboard/team',     TeamsController::class);
 });
 
 Route::view('/dashboard/employees/create', 'dashboard.admin.employees.create');

@@ -16,7 +16,7 @@ class EmployeeFactory extends Factory
             'name' => $this->faker->name,
             'job_role' => $this->faker->jobTitle,
             'bio' => $this->faker->paragraphs(3, true),
-            'profile_photo_path' => $this->faker->imageUrl(),
+            'avatar_path' => $this->faker->imageUrl(),
             'user_id' => User::factory()->create()->id,
         ];
     }

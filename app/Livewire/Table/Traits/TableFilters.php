@@ -42,7 +42,7 @@ trait TableFilters
         $this->filteredData = $data
             ->when($this->filterTasks === 'My Tasks', function ($query){
                 $query->whereHas('assignments', function ($subQuery) {
-                    $subQuery->where('assignments.user_id', 1);
+                    $subQuery->where('assignments.employee_id', 1);
                 });
             })
             ->when($this->filterStatus, function ($query)  {

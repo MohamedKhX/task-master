@@ -7,6 +7,7 @@ use App\PowerGridThemes\PowerGridTheme;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\File;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Footer;
@@ -36,6 +37,22 @@ final class Employees extends PowerGridComponent
     public function employeeUpdated(): void
     {
         $this->refresh();
+    }
+
+    public function deleteEmployee(Employee $employee): void
+    {
+        //Delete the avatar
+        if(File::exists(public_path(Employee::PUBLIC_AVATAR_PATH . $employee->id . '.png'))) {
+            File::delete(public_path(Employee::PUBLIC_AVATAR_PATH . $employee->id . '.png'));
+        }
+
+        $employee->delete();
+
+        $this->refresh();
+
+        $this->notification()->error(
+            'Employee has been deleted'
+        );
     }
 
 
@@ -80,13 +97,15 @@ final class Employees extends PowerGridComponent
             Button::add('delete')
                 ->render(function (Employee $employee) {
                     return Blade::render(<<<HTML
-                          <a x-on:confirm="{
-                                title: 'Sure Delete The Employee?',
-                                icon: 'warning',
-                                method: 'delete',
-                                iconBackground: 'white',
-                                params: 1}"
-                              class="text-danger cursor-pointer">
+                          <a x-on:click="\$wireui.confirmAction({
+                             title: 'You want to delete the employee?',
+                             description: '$employee->name',
+                             icon: 'warning',
+                             method: 'deleteEmployee',
+                             iconBackground: 'white',
+                             params: $employee->id}, \$root.getAttribute('wire:id'))"
+                             class="text-danger cursor-pointer"
+                             >
                                 Delete
                           </a>
                     HTML);
@@ -100,7 +119,7 @@ final class Employees extends PowerGridComponent
             ->addColumn('profile_photo', function ($entry) {
                 return <<<HTML
                     <div>
-                        <img class="w-12 h-12 rounded-full" src="$entry->profile_photo_path" alt="">
+                        <img class="w-12 h-12 rounded-full" src="$entry->avatarPath" alt="">
                     </div>
                   HTML;
             })
@@ -113,6 +132,9 @@ final class Employees extends PowerGridComponent
                            $entry->name
                     </span>
                 HTML);
+            })
+            ->addColumn('team', function ($entry) {
+                return $entry->team?->name;
             })
             ->addColumn('job_role')
             ->addColumn('created_at_formatted', function ($entry) {
@@ -134,6 +156,11 @@ final class Employees extends PowerGridComponent
                 ->sortable(),
 
             Column::make('Job role', 'job_role')
+                ->sortable(),
+
+            Column::add()
+                ->title('Team')
+                ->field('team')
                 ->sortable(),
 
             Column::make('Created', 'created_at_formatted')

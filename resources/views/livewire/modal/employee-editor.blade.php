@@ -9,7 +9,7 @@
     z-index="z-999"
 >
 
-    <x-card title="Task Editor">
+    <x-card title="Employee Editor">
 
         {{-- On Loading --}}
         <x-spinner/>
@@ -21,6 +21,16 @@
             <x-input name="email" wire:model="email" class="pr-28" label="Email" placeholder="Enter employee email" suffix="@mail.com" />
             <x-input name="name" wire:model="name" label="User Name" placeholder="Enter employee name" />
             <x-input name="job_role" wire:model="job_role" label="Job Role" placeholder="Enter employee Job role" />
+
+            <x-select
+                label="Team"
+                placeholder="Select team"
+                wire:model.defer="team_id"
+            >
+                @foreach($teams as $team)
+                    <x-select.option label="{{ $team->name }}" value="{{ $team->id }}" />
+                @endforeach
+            </x-select>
 
             @if(! $editMode)
                 <x-inputs.password name="password" wire:model="password" label="employee Password" />
