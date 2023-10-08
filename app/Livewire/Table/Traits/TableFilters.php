@@ -3,6 +3,7 @@
 namespace App\Livewire\Table\Traits;
 
 use App\Models\Project;
+use App\Models\Tag;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Url;
 
@@ -15,6 +16,14 @@ trait TableFilters
     public ?string $filterStatus = null;
 
     public array $filterTags = [];
+
+    public Collection $tags;
+
+    public function mount(): void
+    {
+        parent::mount();
+        $this->tags = Tag::all();
+    }
 
     public function updatedFilterTasks(): void
     {

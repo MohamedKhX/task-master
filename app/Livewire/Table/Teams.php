@@ -29,14 +29,14 @@ final class Teams extends PowerGridComponent
     public $listeners = ['team-created', 'team-updated'];
 
 
-    public function deleteEmployee(Team $team): void
+    public function deleteTeam(Team $team): void
     {
         $team->delete();
 
         $this->refresh();
 
         $this->notification()->error(
-            'Employee has been deleted'
+            'Team has been deleted'
         );
     }
 
@@ -80,7 +80,7 @@ final class Teams extends PowerGridComponent
                              title: 'You want to delete the team?',
                              description: '$team->name',
                              icon: 'warning',
-                             method: 'deleteEmployee',
+                             method: 'deleteTeam',
                              iconBackground: 'white',
                              params: $team->id}, \$root.getAttribute('wire:id'))"
                              class="text-danger cursor-pointer"

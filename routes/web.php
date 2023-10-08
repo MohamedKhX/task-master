@@ -32,11 +32,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         Route::resource('dashboard/team',     TeamsController::class);
 });
 
-Route::get('dashboard/tags', function () {
-   return \App\Models\Tag::all();
-});
-Route::view('/dashboard/employees/create', 'dashboard.admin.employees.create');
-
 /*
 Route::get('/dashboard/employee', function() {
 

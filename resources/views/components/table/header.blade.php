@@ -29,9 +29,8 @@
         <div class="flex items-center gap-5">
 
             <x-select
-                label="Select tags"
                 placeholder="Select tags"
-                wire:model="filterTags"
+                wire:model.live="filterTags"
                 multiselect
             >
                 @foreach($tags as $tag)

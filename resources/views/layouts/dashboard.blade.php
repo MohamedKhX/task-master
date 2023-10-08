@@ -71,6 +71,7 @@
                     <x-dashboard.sidebar_menu_item
                         name="All Projects"
                         icon-name="dots-horizontal"
+                        href="{{ route('project.index') }}"
                     />
 
             </x-dashboard.sidebar_menu_group>
