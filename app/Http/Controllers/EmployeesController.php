@@ -13,8 +13,10 @@ class EmployeesController extends Controller
         return view('dashboard.employees.index');
     }
 
-    public function destroy(Employee $employee)
+    public function show(Employee $employee)
     {
-     //   dump($employee->name);
+        return view('dashboard.employees.show' , [
+            'employee' => $employee
+        ]);
     }
 }

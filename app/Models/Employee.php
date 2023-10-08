@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\File;
+use JetBrains\PhpStorm\NoReturn;
 use Laravolt\Avatar\Facade as Avatar;
 
 class Employee extends Model
@@ -29,6 +31,23 @@ class Employee extends Model
         'user',
         'team:id,name'
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::created(function (Employee $employee) {
+            $employee->avatar_path = static::createAvatar($employee->id, $employee->name);
+            $employee->save();
+        });
+
+        static::deleting(function (Employee $employee) {
+            //Delete the avatar
+            if(File::exists(public_path(Employee::PUBLIC_AVATAR_PATH . $employee->id . '.png'))) {
+                File::delete(public_path(Employee::PUBLIC_AVATAR_PATH . $employee->id . '.png'));
+            }
+        });
+    }
 
     public function user(): BelongsTo
     {
@@ -61,13 +80,6 @@ class Employee extends Model
             ->count();
     }
 
-    public function avatarPath(): Attribute
-    {
-        return Attribute::get(
-            fn() =>  asset(static::PUBLIC_AVATAR_PATH . $this->id . '.png')
-        );
-    }
-
     public static function createAvatar($id, $name): string
     {
         $path = storage_path(static::STORAGE_AVATAR_PATH);
@@ -79,7 +91,7 @@ class Employee extends Model
         Avatar::create($name)
             ->save($path . $id . '.png');
 
-        return static::STORAGE_AVATAR_PATH . $id . '.png';
+        return static::PUBLIC_AVATAR_PATH . $id . '.png';
     }
 
 }

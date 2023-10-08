@@ -57,16 +57,19 @@
                 />
 
             </x-dashboard.sidebar_menu_group>
-            <x-dashboard.sidebar_menu_group title="Our Projects">
+            @if($projects)
+                <x-dashboard.sidebar_menu_group title="Our Projects">
 
-                @foreach($projects as $project)
-                    <x-dashboard.sidebar_menu_item
-                        name="{{ $project->name }}"
-                        icon-name="check-circle"
-                        icon-fills="fill-danger"
-                        href="{{ route('project.show', $project) }}"
-                    />
-                @endforeach
+                    @forelse($projects as $project)
+                        <x-dashboard.sidebar_menu_item
+                            name="{{ $project->name }}"
+                            icon-name="check-circle"
+                            icon-fills="fill-danger"
+                            href="{{ route('project.show', $project) }}"
+                        />
+                    @empty
+                        <span class="text-white ml-4 my-3">No Projects yet!</span>
+                    @endforelse
 
                     <x-dashboard.sidebar_menu_item
                         name="All Projects"
@@ -74,10 +77,24 @@
                         href="{{ route('project.index') }}"
                     />
 
-            </x-dashboard.sidebar_menu_group>
-            <x-dashboard.sidebar_menu_group title="My teams">
+                </x-dashboard.sidebar_menu_group>
+            @endif
+            <x-dashboard.sidebar_menu_group title="Team Members">
                 <x-dashboard.sidebar_menu_item class="flex items-center justify-start ml-4" type="empty">
-                    <x-members />
+                    @if($team)
+                        <div class="flex justify-center items-center flex-col gap-4 2xsm:flex-row 2xsm:items-center">
+                            <div class="flex flex-wrap gap-2">
+                                @foreach($members as $member)
+                                    <a wire:navigate href="{{ route('employee.show', $member) }}" class="h-8 w-8 rounded-full border-2 border-white dark:border-boxdark">
+                                        <img src="{{ asset($member?->avatar_path)}}" alt="User">
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @else
+                        <span class="text-white">You aren't in a team yet</span>
+                    @endif
+
                 </x-dashboard.sidebar_menu_item>
             </x-dashboard.sidebar_menu_group>
         </x-dashboard.sidebar>

@@ -12,7 +12,6 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'manager_id',
         'name',
         'description',
         'status',
@@ -20,8 +19,6 @@ class Project extends Model
         'budget',
         'start_date',
         'end_date',
-        'completed_at',
-        'archived_at',
         'created_by',
         'team_id',
     ];

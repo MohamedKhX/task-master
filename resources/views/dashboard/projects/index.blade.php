@@ -2,7 +2,7 @@
 
     {{-- Task Dialog --}}
     @push('dialogs')
-
+        <livewire:modal.project-editor />
     @endpush
     {{-- End Task Dialog --}}
 

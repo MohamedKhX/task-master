@@ -41,11 +41,6 @@ final class Employees extends PowerGridComponent
 
     public function deleteEmployee(Employee $employee): void
     {
-        //Delete the avatar
-        if(File::exists(public_path(Employee::PUBLIC_AVATAR_PATH . $employee->id . '.png'))) {
-            File::delete(public_path(Employee::PUBLIC_AVATAR_PATH . $employee->id . '.png'));
-        }
-
         $employee->delete();
 
         $this->refresh();
@@ -117,9 +112,11 @@ final class Employees extends PowerGridComponent
     {
         return PowerGrid::columns()
             ->addColumn('profile_photo', function ($entry) {
+                $imgPath = asset($entry->avatar_path);
+
                 return <<<HTML
                     <div>
-                        <img class="w-12 h-12 rounded-full" src="$entry->avatarPath" alt="">
+                        <img class="w-12 h-12 rounded-full" src="$imgPath" alt="">
                     </div>
                   HTML;
             })

@@ -28,7 +28,7 @@
             >
                 @foreach($employees as $employee)
                     <x-select.user-option
-                        :src="$employee->avatarPath"
+                        :src="asset($employee->avatar_path)"
                         :label="$employee->name"
                         :value="$employee->id"
                     />
@@ -44,7 +44,7 @@
             >
                 @foreach($employees as $employee)
                     <x-select.user-option
-                        :src="$employee->avatarPath"
+                        :src="asset($employee->avatar_path)"
                         :label="$employee->name"
                         :value="$employee->id"
                     />

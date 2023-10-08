@@ -11,4 +11,6 @@ class TeamsController extends Controller
     {
         return view('dashboard.teams.index');
     }
+
+
 }

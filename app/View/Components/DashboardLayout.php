@@ -14,9 +14,16 @@ class DashboardLayout extends Component
      */
     public function render(): View
     {
+        $team = auth()->user()->employee->team;
+
+        $members  = $team?->members;
+
+        $projects = $team?->projects;
+
         return view('layouts.dashboard', [
-            'teams' => Team::all(),
-            'projects' => Project::all()
+            'members'  => $members,
+            'projects' => $projects,
+            'team'     => $team
         ]);
     }
 }

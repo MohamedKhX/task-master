@@ -48,7 +48,6 @@ class DatabaseSeeder extends Seeder
          Project::factory(3)->create([
              'created_by' => $adminEmployee->id,
              'team_id' => $team->id,
-             'manager_id' => $leaderEmployee->id
          ]);
 
          for ($i = 1; $i <= 3; $i++)

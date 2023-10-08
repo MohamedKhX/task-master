@@ -100,8 +100,7 @@ class EmployeeEditor extends Component
             'job_role'    => $this->job_role,
         ]);
 
-        $employee->avatar_path = Employee::createAvatar($employee->id, $employee->name);
-        $employee->save();
+
 
         $this->notification()->success(
             'User Created Successfully'
