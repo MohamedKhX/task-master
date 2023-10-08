@@ -4,7 +4,9 @@ namespace App\Livewire\Modal;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use App\Models\Employee;
 use App\Models\Project;
+use App\Models\Tag;
 use App\Models\Task;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -23,12 +25,14 @@ class TaskEditor extends Component
     public bool $editMode = false;
     public ?Task $task = null;
 
-    public ?string $task_name = null;
-    public ?string $task_status = null;
-    public ?string $task_priority = null;
+    public ?string $task_name        = null;
+    public ?string $task_status      = null;
+    public ?string $task_priority    = null;
     public ?string $task_description = null;
-    public ?string $task_start_date = null;
-    public ?string $task_end_date = null;
+    public ?string $task_start_date  = null;
+    public ?string $task_end_date    = null;
+    public array   $task_tags        = [];
+    public array   $task_assignments = [];
 
     public ?string $task_parent_id = null;
 
@@ -45,6 +49,8 @@ class TaskEditor extends Component
         $this->task_description = $this->task->description;
         $this->task_start_date  = $this->task->start_date;
         $this->task_end_date    = $this->task->end_date;
+        $this->task_tags        = $this->task->tags->pluck('id')->toArray();
+        $this->task_assignments = $this->task->assignments->pluck('id')->toArray();
     }
 
     public function taskCreateMode($parent_id = null): void
@@ -58,6 +64,9 @@ class TaskEditor extends Component
         $this->task_description = null;
         $this->task_start_date  = null;
         $this->task_end_date    = null;
+
+        $this->task_tags        = [];
+        $this->task_assignments = [];
 
         $this->task_parent_id   = $parent_id;
     }
@@ -99,6 +108,9 @@ class TaskEditor extends Component
             'parent_id'  => $this->task_parent_id
         ]);
 
+        $task->tags()->sync($this->task_tags);
+        $task->assignments()->sync($this->task_assignments);
+
         $this->notification()->success(
              'Task Created',
              'Task was successfully created'
@@ -120,6 +132,9 @@ class TaskEditor extends Component
             'description' => $this->task_description,
         ]);
 
+        $this->task->tags()->sync($this->task_tags);
+        $this->task->assignments()->sync($this->task_assignments);
+
         $this->notification()->success(
             'Task Updated',
             'Task was successfully updated'
@@ -134,7 +149,9 @@ class TaskEditor extends Component
     {
         return view('livewire.modal.task-editor', [
             'priorities' => TaskPriority::getValues(),
-            'status'     => TaskStatus::getValues()
+            'status'     => TaskStatus::getValues(),
+            'tags'       => Tag::all(),
+            'employees'  => Employee::all()
         ]);
     }
 }

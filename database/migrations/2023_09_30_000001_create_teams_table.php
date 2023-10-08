@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name', 50);
-            $table->text('description');
-            $table->string('department');
-            $table->string('location');
-            $table->boolean('active')->default(true);
+            $table->string('department', 60);
             $table->timestamps();
 
-            $table->foreignId('leader_id');
+            $table->foreignId('leader_id')->nullable();
             $table->foreignId('created_by');
 
             $table->foreign('leader_id')->references('id')->on('employees');

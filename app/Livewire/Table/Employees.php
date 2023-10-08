@@ -111,7 +111,7 @@ final class Employees extends PowerGridComponent
                     HTML);
                 })
         ];
-}
+    }
 
     public function addColumns(): PowerGridColumns
     {

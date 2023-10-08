@@ -13,12 +13,13 @@ class Team extends Model
 
     protected $fillable = [
         'name',
-        'description',
         'leader_id',
         'department',
         'created_by',
-        'location',
-        'active',
+    ];
+
+    protected $with = [
+        'leader:id,name'
     ];
 
     public function leader(): BelongsTo

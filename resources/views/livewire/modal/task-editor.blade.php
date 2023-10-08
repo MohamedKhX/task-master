@@ -47,15 +47,14 @@
             {{-- Start Assignee To Input --}}
             <div>
                 <x-select
-                    label="Select Relator"
-                    placeholder="Select relator"
-                    wire:model.defer="model"
+                    label="Select employee"
+                    placeholder="Select employee"
+                    wire:model="task_assignments"
                     multiselect
                 >
-                    <x-select.user-option src="https://via.placeholder.com/500" label="People 1" value="1" />
-                    <x-select.user-option src="https://via.placeholder.com/500" label="People 2" value="2" />
-                    <x-select.user-option src="https://via.placeholder.com/500" label="People 3" value="3" />
-                    <x-select.user-option src="https://via.placeholder.com/500" label="People 4" value="4" />
+                    @foreach($employees as $employee)
+                        <x-select.option :label="$employee->name" :value="$employee->id" />
+                    @endforeach
                 </x-select>
             </div>
             {{-- End Assignee To Input --}}
@@ -63,12 +62,15 @@
             {{-- Start Tags Input --}}
             <div>
                 <x-select
-                    label="Tags:"
-                    placeholder="Select some user"
-                    option-label="name"
-                    option-value="id"
-                    multiselect="true"
-                />
+                    label="Select tags"
+                    placeholder="Select tags"
+                    wire:model="task_tags"
+                    multiselect
+                >
+                    @foreach($tags as $tag)
+                        <x-select.option :label="$tag->name" :value="$tag->id" />
+                    @endforeach
+                </x-select>
             </div>
             {{-- End Tags Input --}}
 

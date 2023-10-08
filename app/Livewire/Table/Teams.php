@@ -4,9 +4,8 @@ namespace App\Livewire\Table;
 
 use App\Models\Team;
 use App\PowerGridThemes\PowerGridTheme;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Blade;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
 use PowerComponents\LivewirePowerGrid\Exportable;
@@ -17,14 +16,80 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridColumns;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\Traits\WithExport;
+use WireUi\Traits\Actions;
 
 final class Teams extends PowerGridComponent
 {
-    use WithExport;
+    use Actions;
+
+    public string $sortField = 'created_at';
+
+    public string $sortDirection = 'desc';
+
+    public $listeners = ['team-created', 'team-updated'];
+
+
+    public function deleteEmployee(Team $team): void
+    {
+        $team->delete();
+
+        $this->refresh();
+
+        $this->notification()->error(
+            'Employee has been deleted'
+        );
+    }
+
+    public function teamCreated(): void
+    {
+        $this->refresh();
+    }
+
+    public function teamUpdated(): void
+    {
+        $this->refresh();
+    }
 
     public function template(): ?string
     {
         return PowerGridTheme::class;
+    }
+
+    public function header(): array
+    {
+        return [
+            Button::add('new-modal')
+                ->render(function () {
+                    return Blade::render(<<<HTML
+                            <x-button primary label="Create new team"
+                                      @click="\$openModal('teamEditorModal'); \$dispatch('teamCreateMode')"
+                            />
+                        HTML);
+                })
+            ,
+        ];
+    }
+
+    public function actions(Team $row): array
+    {
+        return [
+            Button::add('delete')
+                ->render(function (Team $team) {
+                    return Blade::render(<<<HTML
+                          <a x-on:click="\$wireui.confirmAction({
+                             title: 'You want to delete the team?',
+                             description: '$team->name',
+                             icon: 'warning',
+                             method: 'deleteEmployee',
+                             iconBackground: 'white',
+                             params: $team->id}, \$root.getAttribute('wire:id'))"
+                             class="text-danger cursor-pointer"
+                             >
+                                Delete
+                          </a>
+                    HTML);
+                })
+        ];
     }
 
     public function setUp(): array
@@ -45,14 +110,20 @@ final class Teams extends PowerGridComponent
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
-            ->addColumn('name')
-            ->addColumn('department')
-            ->addColumn('active', function ($model) {
+            ->addColumn('name', function ($model) {
                 return <<<HTML
-                    <span>$model->active</span>
+                    <span class="cursor-pointer"
+                     @click="\$openModal('teamEditorModal');
+                             \$dispatch('teamEditMode', {id: '$model->id'})"
+                    >
+                           $model->name
+                    </span>
                 HTML;
             })
-            ->addColumn('leader_id');
+            ->addColumn('department')
+            ->addColumn('leader', function($model) {
+                return $model->leader?->name;
+            });
     }
 
     public function columns(): array
@@ -66,19 +137,8 @@ final class Teams extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Active', 'active'),
-
-            Column::make('Created at', 'created_at_formatted', 'created_at')
-                ->sortable(),
-
-            Column::make('Leader id', 'leader_id'),
+            Column::make('Leader', 'leader'),
+            Column::action('Actions')
         ];
     }
-
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
-    {
-        $this->js('alert('.$rowId.')');
-    }
-
 }

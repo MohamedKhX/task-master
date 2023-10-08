@@ -20,10 +20,7 @@ class TeamFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'description' => $this->faker->text,
             'department' => $this->faker->word,
-            'location' => $this->faker->city,
-            'active' => $this->faker->boolean,
             'leader_id' => Employee::factory()->create()->id,
             'created_by' => Employee::factory()->create()->id,
         ];

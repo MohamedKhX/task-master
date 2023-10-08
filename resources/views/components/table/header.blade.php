@@ -27,14 +27,17 @@
             />
         </div>
         <div class="flex items-center gap-5">
+
             <x-select
+                label="Select tags"
+                placeholder="Select tags"
+                wire:model="filterTags"
                 multiselect
-                searchable="false"
-                placeholder="Tags"
-                option-label="name"
-                option-value="id"
-                wire:model.live="filterTags"
-            />
+            >
+                @foreach($tags as $tag)
+                    <x-select.option :label="$tag->name" :value="$tag->id" />
+                @endforeach
+            </x-select>
 
         </div>
     </div>
