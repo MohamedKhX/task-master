@@ -11,14 +11,4 @@ class DashboardController extends Controller
     {
         return view('dashboard.overview');
     }
-
-    public function tasks()
-    {
-        return view('dashboard.tasks');
-    }
-
-    public function inbox()
-    {
-        //Todo: to return inbox view
-    }
 }

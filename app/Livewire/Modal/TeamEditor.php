@@ -22,8 +22,6 @@ class TeamEditor extends Component
     #[Rule('required|max:60|string')]
     public ?string $department = null;
 
-    public ?string $leader_id  = null;
-
     #[Rule('nullable')]
     public array $members;
 
@@ -36,8 +34,8 @@ class TeamEditor extends Component
 
         $this->name       = $this->team->name;
         $this->department = $this->team->department;
-        $this->leader_id  = $this->team->leader?->id;
-        $this->members    = (array) $this->team->members;
+        $this->members    = $this->team->members->pluck('id')->toArray();
+
     }
 
     public function teamCreateMode(): void
@@ -47,7 +45,6 @@ class TeamEditor extends Component
 
         $this->name       = null;
         $this->department = null;
-        $this->leader_id  = null;
         $this->members    = [];
     }
 
@@ -67,7 +64,6 @@ class TeamEditor extends Component
         $team = Team::create([
             'name'       => $this->name,
             'department' => $this->department,
-            'leader_id'  => $this->leader_id,
             'created_by' => auth()->user()->id
         ]);
 
@@ -88,7 +84,6 @@ class TeamEditor extends Component
         $this->team->update([
            'name'       => $this->name,
            'department' => $this->department,
-           'leader_id'  => $this->leader_id
         ]);
 
         Employee::whereIn('id', $this->members)

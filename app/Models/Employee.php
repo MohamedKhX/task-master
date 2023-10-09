@@ -7,13 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use JetBrains\PhpStorm\NoReturn;
 use Laravolt\Avatar\Facade as Avatar;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory,
+        Notifiable;
 
     const STORAGE_AVATAR_PATH = 'app/public/avatars/avatar-';
     const PUBLIC_AVATAR_PATH = 'storage/avatars/avatar-';

@@ -13,19 +13,9 @@ class Team extends Model
 
     protected $fillable = [
         'name',
-        'leader_id',
         'department',
         'created_by',
     ];
-
-    protected $with = [
-        'leader:id,name'
-    ];
-
-    public function leader(): BelongsTo
-    {
-        return $this->belongsTo(Employee::class, 'leader_id');
-    }
 
     public function createdBy(): BelongsTo
     {

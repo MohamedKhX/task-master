@@ -7,6 +7,11 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    {{-- Favicons --}}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('img/favicons/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('img/favicons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('img/favicons/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('img/favicons/site.webmanifest') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -40,7 +45,7 @@
                 <x-dashboard.sidebar_menu_item
                     name="Inbox"
                     icon-name="inbox"
-                    href="{{ route('tasks') }}"
+                    href="{{ route('inbox') }}"
                 />
 
                 <x-dashboard.sidebar_menu_item
@@ -99,8 +104,7 @@
             </x-dashboard.sidebar_menu_group>
         </x-dashboard.sidebar>
         {{-- End Sidebar --}}
-
-        <div class=" relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
 
             {{-- Start Header --}}
             <x-dashboard.header />

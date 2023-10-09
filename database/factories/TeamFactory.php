@@ -21,7 +21,6 @@ class TeamFactory extends Factory
         return [
             'name' => $this->faker->name,
             'department' => $this->faker->word,
-            'leader_id' => Employee::factory()->create()->id,
             'created_by' => Employee::factory()->create()->id,
         ];
     }

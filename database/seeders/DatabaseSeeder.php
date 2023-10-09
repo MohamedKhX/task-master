@@ -42,7 +42,6 @@ class DatabaseSeeder extends Seeder
          $team = Team::factory()->create([
              'name' => 'Web developers',
              'created_by' => $adminEmployee->id,
-             'leader_id' => $leaderEmployee->id
          ]);
 
          Project::factory(3)->create([

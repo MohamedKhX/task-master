@@ -33,8 +33,6 @@ class Task extends Model
         'completed_at',
     ];
 
-
-
     protected $with = [
         'tags',
         'assignments'

@@ -50,7 +50,6 @@ final class Employees extends PowerGridComponent
         );
     }
 
-
     public function template(): ?string
     {
         return PowerGridTheme::class;
@@ -113,10 +112,12 @@ final class Employees extends PowerGridComponent
         return PowerGrid::columns()
             ->addColumn('profile_photo', function ($entry) {
                 $imgPath = asset($entry->avatar_path);
-
+                $route = route('employee.show', $entry);
                 return <<<HTML
                     <div>
-                        <img class="w-12 h-12 rounded-full" src="$imgPath" alt="">
+                        <a wire:navigate href="$route">
+                            <img class="w-12 h-12 rounded-full" src="$imgPath" alt="">
+                        </a>
                     </div>
                   HTML;
             })

@@ -4,6 +4,7 @@ namespace App\Livewire\Table;
 
 use App\Models\Team;
 use App\PowerGridThemes\PowerGridTheme;
+use App\View\Components\Table\Members;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use PowerComponents\LivewirePowerGrid\Button;
@@ -121,8 +122,8 @@ final class Teams extends PowerGridComponent
                 HTML;
             })
             ->addColumn('department')
-            ->addColumn('leader', function($model) {
-                return $model->leader?->name;
+            ->addColumn('Members', function ($model) {
+                return Blade::renderComponent(new Members($model->members));
             });
     }
 
@@ -137,7 +138,11 @@ final class Teams extends PowerGridComponent
                 ->sortable()
                 ->searchable(),
 
-            Column::make('Leader', 'leader'),
+            Column::add()
+                ->title('Members')
+                ->field('Members', 'Members')
+                ->headerAttribute('text-center'),
+
             Column::action('Actions')
         ];
     }

@@ -54,7 +54,27 @@
     </li>
 @else
     {{-- Overview Item --}}
-    <li x-init="'{{ request()->url()  }}' === '{{ $href }}' ? selected = '{{ $name }}' : null ">
+    <li
+        x-init="
+
+        if(getUrlWithoutQueryString() === '{{ $href }}')
+        {
+            selected = '{{$name}}'
+        }
+
+        function getUrlWithoutQueryString() {
+            let url = window.location.href;
+            let index = url.indexOf('?');
+
+            if (index !== -1) {
+                url = url.substring(0, index);
+            }
+
+            return url;
+        }
+
+
+        ">
         <a
             wire:navigate
             class="group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"

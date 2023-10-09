@@ -18,7 +18,7 @@ class DashboardLayout extends Component
 
         $members  = $team?->members;
 
-        $projects = $team?->projects;
+        $projects = $team?->projects()->limit(5)->get();
 
         return view('layouts.dashboard', [
             'members'  => $members,

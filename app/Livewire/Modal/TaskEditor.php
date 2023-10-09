@@ -8,8 +8,10 @@ use App\Models\Employee;
 use App\Models\Project;
 use App\Models\Tag;
 use App\Models\Task;
+use App\Notifications\AssignedTask;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Component;
@@ -111,6 +113,10 @@ class TaskEditor extends Component
         $task->tags()->sync($this->task_tags);
         $task->assignments()->sync($this->task_assignments);
 
+        if($this->task_assignments) {
+            $this->notifyEmployees($task);
+        }
+
         $this->notification()->success(
              'Task Created',
              'Task was successfully created'
@@ -135,6 +141,10 @@ class TaskEditor extends Component
         $this->task->tags()->sync($this->task_tags);
         $this->task->assignments()->sync($this->task_assignments);
 
+        if($this->task_assignments) {
+            $this->notifyEmployees($this->task);
+        }
+
         $this->notification()->success(
             'Task Updated',
             'Task was successfully updated'
@@ -143,6 +153,14 @@ class TaskEditor extends Component
         $this->dispatch('task-updated', $this->task);
 
         return true;
+    }
+
+    protected function notifyEmployees(Task $task): void
+    {
+        $assignments = Employee::whereIn('id', $this->task_assignments)->get();
+        foreach ($assignments as $assignment) {
+            \App\Events\AssignedTask::dispatch($task, $assignment);
+        }
     }
 
     public function render(): View|Closure|string

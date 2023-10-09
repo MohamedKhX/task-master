@@ -70,8 +70,10 @@ final class Projects extends PowerGridComponent
         return [
             Button::add('delete')
                 ->render(function (Project $project) {
+                    $projectRoute = route('project.show', $project);
                     return Blade::render(<<<HTML
-                          <a x-on:click="\$wireui.confirmAction({
+                    <div class="flex justify-center gap-2">
+                     <a x-on:click="\$wireui.confirmAction({
                              title: 'You want to delete the team?',
                              description: '$project->name',
                              icon: 'warning',
@@ -82,8 +84,13 @@ final class Projects extends PowerGridComponent
                              >
                                 Delete
                           </a>
+                          <a wire:navigate href="$projectRoute" class="text-dark cursor-pointer">
+                                Show
+                          </a>
+                    </div>
+
                     HTML);
-                })
+                }),
         ];
     }
 

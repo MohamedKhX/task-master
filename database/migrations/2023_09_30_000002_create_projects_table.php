@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->enum('status', ['Not Started', 'In Progress', 'On Hold', 'Completed'])->default('Not Started');
-            $table->enum('priority', ['Low', 'Normal', 'High', 'Urgent']);
             $table->decimal('budget', 10, 2)->nullable();
 
             $table->timestamp('start_date')->nullable();

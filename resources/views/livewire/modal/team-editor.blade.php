@@ -22,26 +22,12 @@
             <x-input name="department" wire:model="department" label="Team Department" placeholder="Enter team department" />
 
             <x-select
-                label="Select Leader"
-                placeholder="Select Leader"
-                wire:model="leader_id"
-            >
-                @foreach($employees as $employee)
-                    <x-select.user-option
-                        :src="asset($employee->avatar_path)"
-                        :label="$employee->name"
-                        :value="$employee->id"
-                    />
-                @endforeach
-
-            </x-select>
-
-            <x-select
                 label="Select Members"
                 placeholder="Select Members"
                 wire:model="members"
                 multiselect
             >
+
                 @foreach($employees as $employee)
                     <x-select.user-option
                         :src="asset($employee->avatar_path)"
@@ -49,10 +35,7 @@
                         :value="$employee->id"
                     />
                 @endforeach
-
             </x-select>
-
-
 
         </div>
         {{-- End Form --}}

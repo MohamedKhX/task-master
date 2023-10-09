@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeesController;
+use App\Http\Controllers\InboxController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TeamsController;
 use Illuminate\Support\Facades\Route;
@@ -25,12 +26,14 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])
     ->group(function () {
         Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
-        Route::get('dashboard/tasks', [DashboardController::class, 'tasks'])->name('tasks');
 
         Route::resource('dashboard/project',  ProjectController::class);
         Route::resource('dashboard/employee', EmployeesController::class);
         Route::resource('dashboard/team',     TeamsController::class);
-});
+
+        Route::get('dashboard/inbox', InboxController::class)->name('inbox');
+
+    });
 
 /*
 Route::get('/dashboard/employee', function() {
