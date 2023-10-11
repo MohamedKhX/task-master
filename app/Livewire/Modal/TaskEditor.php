@@ -33,7 +33,9 @@ class TaskEditor extends Component
     public ?string $task_description = null;
     public ?string $task_start_date  = null;
     public ?string $task_end_date    = null;
-    public array   $task_tags        = [];
+    public ?string $task_tags        = null;
+
+    public array $tags = [];
     public array   $task_assignments = [];
 
     public ?string $task_parent_id = null;
@@ -51,8 +53,10 @@ class TaskEditor extends Component
         $this->task_description = $this->task->description;
         $this->task_start_date  = $this->task->start_date;
         $this->task_end_date    = $this->task->end_date;
-        $this->task_tags        = $this->task->tags->pluck('id')->toArray();
+        $this->task_tags        = $this->task->tags->pluck('name');
         $this->task_assignments = $this->task->assignments->pluck('id')->toArray();
+
+        $this->dispatch('assign-tags', $this->task_tags);
     }
 
     public function taskCreateMode($parent_id = null): void
@@ -67,10 +71,13 @@ class TaskEditor extends Component
         $this->task_start_date  = null;
         $this->task_end_date    = null;
 
-        $this->task_tags        = [];
+        $this->task_tags        = null;
         $this->task_assignments = [];
 
         $this->task_parent_id   = $parent_id;
+
+        $this->dispatch('assign-tags', null);
+
     }
 
     public function rules(): array
@@ -97,6 +104,12 @@ class TaskEditor extends Component
 
     public function createTask(): bool
     {
+        if($this->task_parent_id) {
+            $this->authorize('createSubtask', Task::find($this->task_parent_id));
+        } else {
+            $this->authorize('create', Task::class);
+        }
+
         $task = Task::create([
             'name'        => $this->task_name,
             'status'      => $this->task_status,
@@ -129,6 +142,10 @@ class TaskEditor extends Component
 
     public function updateTask(): bool
     {
+        dd($this->tags);
+
+        $this->authorize('update', $this->task);
+
         $this->task->update([
             'name'       => $this->task_name,
             'status'     => $this->task_status,
@@ -169,7 +186,8 @@ class TaskEditor extends Component
             'priorities' => TaskPriority::getValues(),
             'status'     => TaskStatus::getValues(),
             'tags'       => Tag::all(),
-            'employees'  => Employee::all()
+            'members'   => $this->project->team->members
         ]);
     }
+
 }

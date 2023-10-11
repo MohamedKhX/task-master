@@ -137,6 +137,18 @@ final class Employees extends PowerGridComponent
                 return $entry->team?->name;
             })
             ->addColumn('job_role')
+            ->addColumn('roles', function ($entry) {
+                $roles = $entry->user->roles;
+                return Blade::render(<<<HTML
+                     <div class="flex gap-2">
+                        @foreach(\$roles as \$role)
+                           <span class="text-danger uppercase">{{ \$role->name }}</span>
+                        @endforeach
+                     </div>
+                HTML, [
+                    'roles' => $roles
+                ]);
+            })
             ->addColumn('created_at_formatted', function ($entry) {
                 return Carbon::parse($entry->created_at)->format('d/m/Y');
             });
@@ -157,6 +169,12 @@ final class Employees extends PowerGridComponent
 
             Column::make('Job role', 'job_role')
                 ->sortable(),
+
+            Column::add()
+                ->title('Roles')
+                ->field('roles')
+                ->sortable(),
+
 
             Column::add()
                 ->title('Team')

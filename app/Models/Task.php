@@ -31,6 +31,7 @@ class Task extends Model
         'end_date',
         'parent_id',
         'completed_at',
+        'created_by',
     ];
 
     protected $with = [

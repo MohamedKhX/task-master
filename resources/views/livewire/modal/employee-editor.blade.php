@@ -32,6 +32,17 @@
                 @endforeach
             </x-select>
 
+            <x-select
+                label="Roles"
+                placeholder="Select Roles"
+                wire:model.defer="user_roles"
+                multiselect
+            >
+                @foreach($roles as $role)
+                    <x-select.option label="{{ $role->name }}" value="{{ $role->name }}" />
+                @endforeach
+            </x-select>
+
             @if(! $editMode)
                 <x-inputs.password name="password" wire:model="password" label="employee Password" />
                 <x-inputs.password id="password_confirmation" name="password_confirmation" wire:model="password_confirmation" label="Confirm Password" />

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('priority', ['Critical', 'High', 'Low'])->nullable();
             $table->enum('status', ['Completed', 'In Progress', 'Pending'])->nullable();
-            $table->foreignId('created_by')->nullable();
+            $table->foreignId('created_by');
             $table->foreignId('project_id')->nullable();
             $table->foreignId('parent_id')->nullable();
 

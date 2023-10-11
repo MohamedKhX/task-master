@@ -5,11 +5,12 @@
                 <x-button class="px-12" outline icon="plus" primary label="Add New Task"
                           @click="$openModal('taskEditorModal'); $dispatch('taskCreateMode')"
                 />
-
             @else
-                <x-button class="px-12" outline icon="plus" primary label="Add Sub Task"
-                          @click="$openModal('taskEditorModal'); $dispatch('taskCreateMode', {parent_id: '{{ $task->id }}'})"
-                />
+                @can('createSubtask', $task)
+                    <x-button class="px-12" outline icon="plus" primary label="Add Sub Task"
+                              @click="$openModal('taskEditorModal'); $dispatch('taskCreateMode', {parent_id: '{{ $task->id }}'})"
+                    />
+                @endcan
             @endif
         </div>
         <div class="flex items-center gap-5">

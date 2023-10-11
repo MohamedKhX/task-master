@@ -32,13 +32,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
         /*
          * For Admin users
          * */
-        Route::middleware('admin')->group(function () {
+        Route::middleware(['role:admin'])->group(function () {
             Route::get('dashboard/employee', [EmployeesController::class, 'index'])->name('employee.index');
             Route::get('dashboard/team',     [TeamsController::class, 'index'])->name('team.index');
         });
 
-        Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
         Route::resource('dashboard/project',  ProjectController::class);
+
+        Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
         Route::get('dashboard/inbox', InboxController::class)->name('inbox');
         Route::get('dashboard/employee/{employee:id}', [EmployeesController::class, 'show'])->name('employee.show');
 });

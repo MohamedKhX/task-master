@@ -9,8 +9,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Unique;
 use Laravel\Fortify\Rules\Password;
-use Laravolt\Avatar\Facade as Avatar;
 use Livewire\Component;
+use Spatie\Permission\Models\Role;
 use WireUi\Traits\Actions;
 
 class EmployeeEditor extends Component
@@ -28,6 +28,8 @@ class EmployeeEditor extends Component
     public ?string $password = null;
     public ?string $password_confirmation = null;
     public ?string $team_id = null;
+
+    public array $user_roles = [];
 
     protected $listeners = ['employeeEditMode', 'employeeCreateMode'];
 
@@ -59,6 +61,8 @@ class EmployeeEditor extends Component
         $this->job_role = $this->employee->job_role;
         $this->email    = $this->employee->user->email;
         $this->team_id  = $this->employee->team?->id;
+
+        $this->user_roles = $this->user->roles->pluck('name')->toArray();
     }
 
     public function employeeCreateMode(): void
@@ -72,6 +76,8 @@ class EmployeeEditor extends Component
         $this->password              = null;
         $this->password_confirmation = null;
         $this->team_id               = null;
+
+        $this->user_roles            = [];
     }
 
     public function saveEmployee(): bool
@@ -83,7 +89,6 @@ class EmployeeEditor extends Component
         } else {
             return $this->createEmployee();
         }
-
     }
 
     public function createEmployee(): bool
@@ -94,6 +99,8 @@ class EmployeeEditor extends Component
             'email' => $this->email,
             'password' => Hash::make($this->password),
         ]);
+
+        $user->assignRole(...$this->user_roles);
 
         $employee = Employee::create([
             'user_id'     => $user->id,
@@ -126,6 +133,8 @@ class EmployeeEditor extends Component
             'email' => $this->email
         ]);
 
+        $this->user->syncRoles(...$this->user_roles);
+
         $this->notification()->success(
             'Employee Updated',
             'Employee was successfully updated'
@@ -139,7 +148,8 @@ class EmployeeEditor extends Component
     public function render()
     {
         return view('livewire.modal.employee-editor', [
-            'teams' => Team::all()
+            'teams' => Team::all(),
+            'roles' => Role::all()
         ]);
     }
 }

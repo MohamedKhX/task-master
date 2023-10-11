@@ -16,7 +16,7 @@ class TaskFactory extends Factory
             'description' => $this->faker->optional()->text,
             'priority' => $this->faker->randomElement(['Low', 'High', 'Critical']),
             'status' => $this->faker->randomElement(['Completed', 'In Progress', 'Pending']),
-            'created_by' => $this->faker->optional()->numberBetween(1, 10),
+            'created_by' => 1,
             'project_id' => $this->faker->optional()->numberBetween(1, 10),
             'start_date' => $this->faker->optional()->dateTime(),
             'end_date' => $this->faker->optional()->dateTime(),
