@@ -48,18 +48,21 @@
                     href="{{ route('inbox') }}"
                 />
 
-                <x-dashboard.sidebar_menu_item
-                    name="Employees"
-                    icon-name="briefcase"
-                    href="{{ route('employee.index') }}"
-                />
+                @role('admin')
+                    <x-dashboard.sidebar_menu_item
+                        name="Employees"
+                        icon-name="briefcase"
+                        href="{{ route('employee.index') }}"
+                    />
+                @endrole
 
-
-                <x-dashboard.sidebar_menu_item
-                    name="Teams"
-                    icon-name="hand"
-                    href="{{ route('team.index') }}"
-                />
+                @role('admin')
+                    <x-dashboard.sidebar_menu_item
+                        name="Teams"
+                        icon-name="hand"
+                        href="{{ route('team.index') }}"
+                    />
+                @endrole
 
             </x-dashboard.sidebar_menu_group>
             @if($projects)

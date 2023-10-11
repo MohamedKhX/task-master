@@ -43,7 +43,7 @@ class AssignedTask extends Notification
     public function toArray($notifiable): array
     {
         $employeeName = $this->employee->name;
-        $taskTitle = $this->task->title;
+        $taskName = $this->task->name;
 
         return [
             'task_id' => $this->task->id,
@@ -51,7 +51,7 @@ class AssignedTask extends Notification
                 'greeting' => "Hello $employeeName",
                 'content' => 'A new task has been assigned to you. Please review the details and take necessary action.',
                 'task_details' => [
-                    'title' => $taskTitle,
+                    'name' => $taskName,
                 ],
             ],
         ];

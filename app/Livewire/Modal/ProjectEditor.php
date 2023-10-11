@@ -74,6 +74,8 @@ class ProjectEditor extends Component
 
     public function createProject(): bool
     {
+        $this->authorize('create', Project::class);
+
         $project = Project::create([
             'name'       => $this->name,
             'status'     => $this->status,
@@ -97,6 +99,8 @@ class ProjectEditor extends Component
 
     public function updateProject(): bool
     {
+        $this->authorize('update', $this->project);
+
         $this->project->update([
             'name'       => $this->name,
             'status'     => $this->status,

@@ -35,7 +35,6 @@ class TeamEditor extends Component
         $this->name       = $this->team->name;
         $this->department = $this->team->department;
         $this->members    = $this->team->members->pluck('id')->toArray();
-
     }
 
     public function teamCreateMode(): void
@@ -61,6 +60,8 @@ class TeamEditor extends Component
 
     public function createTeam(): bool
     {
+        $this->authorize('update', Team::class);
+
         $team = Team::create([
             'name'       => $this->name,
             'department' => $this->department,
@@ -81,6 +82,8 @@ class TeamEditor extends Component
 
     public function updateTeam(): bool
     {
+        $this->authorize('update', $this->team);
+
         $this->team->update([
            'name'       => $this->name,
            'department' => $this->department,

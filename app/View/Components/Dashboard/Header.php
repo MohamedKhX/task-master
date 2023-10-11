@@ -21,6 +21,8 @@ class Header extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.dashboard.header');
+        return view('components.dashboard.header', [
+            'employee' => auth()->user()->employee
+        ]);
     }
 }

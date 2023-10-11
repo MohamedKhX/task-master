@@ -32,6 +32,8 @@ final class Teams extends PowerGridComponent
 
     public function deleteTeam(Team $team): void
     {
+        $this->authorize('delete', $team);
+
         $team->delete();
 
         $this->refresh();

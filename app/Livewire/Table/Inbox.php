@@ -42,9 +42,13 @@ final class Inbox extends PowerGridComponent
     public function addColumns(): PowerGridColumns
     {
         return PowerGrid::columns()
-            ->addColumn('name')
-            ->addColumn('price')
-            ->addColumn('created_at_formatted', function ($entry) {
+            ->addColumn('message', function($entry) {
+                return $entry->data['message']['content'];
+            })
+            ->addColumn('task_name', function ($entry) {
+                return $entry->data['message']['task_details']['name'];
+            })
+            ->addColumn('At', function ($entry) {
                 return Carbon::parse($entry->created_at)->format('d/m/Y');
             });
     }
@@ -52,16 +56,14 @@ final class Inbox extends PowerGridComponent
     public function columns(): array
     {
         return [
-            Column::make('Name', 'name')
+            Column::make('Message', 'message')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Price', 'price')
+            Column::make('Task Name', 'task_name')
                 ->sortable(),
 
-            Column::make('Created', 'created_at_formatted'),
-
-            Column::action('Action')
+            Column::make('At', 'At'),
         ];
     }
 }

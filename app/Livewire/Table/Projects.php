@@ -31,6 +31,8 @@ final class Projects extends PowerGridComponent
 
     public function deleteProject(Project $project): void
     {
+        $this->authorize('delete', $project);
+
         $project->delete();
 
         $this->refresh();
@@ -55,6 +57,9 @@ final class Projects extends PowerGridComponent
         return [
             Button::add('new-modal')
                 ->render(function () {
+
+                    if(! auth()->user()->can('create', Project::class)) return null;
+
                     return Blade::render(<<<HTML
                             <x-button primary label="Create new project"
                                       @click="\$openModal('projectEditorModal'); \$dispatch('projectCreateMode')"
@@ -70,20 +75,31 @@ final class Projects extends PowerGridComponent
         return [
             Button::add('delete')
                 ->render(function (Project $project) {
+
+
                     $projectRoute = route('project.show', $project);
-                    return Blade::render(<<<HTML
-                    <div class="flex justify-center gap-2">
-                     <a x-on:click="\$wireui.confirmAction({
+
+                    if(auth()->user()->can('delete', $project)) {
+                        $deleteButton = <<<HTML
+                        <a x-on:click="\$wireui.confirmAction({
                              title: 'You want to delete the team?',
                              description: '$project->name',
                              icon: 'warning',
-                             method: 'deleteTeam',
+                             method: 'deleteProject',
                              iconBackground: 'white',
                              params: $project->id}, \$root.getAttribute('wire:id'))"
                              class="text-danger cursor-pointer"
                              >
                                 Delete
                           </a>
+                        HTML;
+                    } else {
+                        $deleteButton = '';
+                    }
+
+                    return Blade::render(<<<HTML
+                    <div class="flex justify-center gap-2">
+                          $deleteButton
                           <a wire:navigate href="$projectRoute" class="text-dark cursor-pointer">
                                 Show
                           </a>

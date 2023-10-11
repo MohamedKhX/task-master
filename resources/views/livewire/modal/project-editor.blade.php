@@ -63,9 +63,11 @@
         <x-slot name="footer">
             <div class="flex justify-end gap-x-4">
                 <x-button flat label="Cancel" x-on:click="close" />
-                <form method="post" wire:submit="saveProject">
-                    <x-button type="submit" primary label="Save" />
-                </form>
+                @can('update', $project)
+                    <form method="post" wire:submit="saveProject">
+                        <x-button type="submit" primary label="Save" />
+                    </form>
+                @endcan
             </div>
         </x-slot>
     </x-card>

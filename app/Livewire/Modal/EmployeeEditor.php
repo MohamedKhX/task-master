@@ -88,6 +88,8 @@ class EmployeeEditor extends Component
 
     public function createEmployee(): bool
     {
+        $this->authorize('create', Employee::class);
+
         $user = User::create([
             'email' => $this->email,
             'password' => Hash::make($this->password),
@@ -99,8 +101,6 @@ class EmployeeEditor extends Component
             'name'        => $this->name,
             'job_role'    => $this->job_role,
         ]);
-
-
 
         $this->notification()->success(
             'User Created Successfully'
@@ -114,6 +114,8 @@ class EmployeeEditor extends Component
 
     public function updateEmployee(): bool
     {
+        $this->authorize('update', $this->employee);
+
         $this->employee->update([
             'name'     => $this->name,
             'job_role' => $this->job_role,

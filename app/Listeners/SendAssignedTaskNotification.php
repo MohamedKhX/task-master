@@ -21,7 +21,6 @@ class SendAssignedTaskNotification
      */
     public function handle(AssignedTask $event): void
     {
-
         $event->employee->notify(new \App\Notifications\AssignedTask($event->task, $event->employee));
     }
 }

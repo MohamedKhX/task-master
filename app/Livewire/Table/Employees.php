@@ -41,6 +41,8 @@ final class Employees extends PowerGridComponent
 
     public function deleteEmployee(Employee $employee): void
     {
+        $this->authorize('delete', $employee);
+
         $employee->delete();
 
         $this->refresh();

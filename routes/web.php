@@ -23,25 +23,22 @@ Route::get('/', function () {
     return redirect(\route('dashboard'));
 });
 
+/*
+ * For authtecaitd users
+ * */
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])
     ->group(function () {
+
+        /*
+         * For Admin users
+         * */
+        Route::middleware('admin')->group(function () {
+            Route::get('dashboard/employee', [EmployeesController::class, 'index'])->name('employee.index');
+            Route::get('dashboard/team',     [TeamsController::class, 'index'])->name('team.index');
+        });
+
         Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
-
         Route::resource('dashboard/project',  ProjectController::class);
-        Route::resource('dashboard/employee', EmployeesController::class);
-        Route::resource('dashboard/team',     TeamsController::class);
-
         Route::get('dashboard/inbox', InboxController::class)->name('inbox');
-
-    });
-
-/*
-Route::get('/dashboard/employee', function() {
-
-    dump(Avatar::create('Susilo Bambang Yudhoyono')->save('sample.png'));
-    $employee = \App\Models\Employee::first();
-
-    return view('employee.show', [
-        'employee' => $employee
-    ]);
-});*/
+        Route::get('dashboard/employee/{employee:id}', [EmployeesController::class, 'show'])->name('employee.show');
+});

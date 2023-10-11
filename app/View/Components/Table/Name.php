@@ -21,6 +21,7 @@ class Name extends Component
     {
         return view('components.table.name', [
             'task' => $this->task,
+            'tags' => $this->task->tags()->limit(5)->get(),
             'name' => Str::limit($this->task->name, 40, '...')
         ]);
     }
