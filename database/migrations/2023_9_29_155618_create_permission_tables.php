@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class CreatePermissionTables extends Migration
@@ -11,8 +13,9 @@ class CreatePermissionTables extends Migration
      * Run the migrations.
      *
      * @return void
+     * @throws Exception
      */
-    public function up()
+    public function up(): void
     {
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
@@ -117,14 +120,17 @@ class CreatePermissionTables extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
+
+        $this->insertData();
     }
 
     /**
      * Reverse the migrations.
      *
      * @return void
+     * @throws Exception
      */
-    public function down()
+    public function down(): void
     {
         $tableNames = config('permission.table_names');
 
@@ -137,5 +143,33 @@ class CreatePermissionTables extends Migration
         Schema::drop($tableNames['model_has_permissions']);
         Schema::drop($tableNames['roles']);
         Schema::drop($tableNames['permissions']);
+    }
+
+    protected function insertData(): void
+    {
+        $adminRole  = Role::create(['name' => 'admin']);
+        $teamLeader = Role::create(['name' => 'teamLeader']);
+
+        $adminPermissions = [
+            Permission::create(['name' => 'create employees']),
+            Permission::create(['name' => 'update employees']),
+            Permission::create(['name' => 'delete employees']),
+
+            Permission::create(['name' => 'create teams']),
+            Permission::create(['name' => 'update teams']),
+            Permission::create(['name' => 'delete teams']),
+        ];
+
+        $teamPermissions = [
+            Permission::create(['name' => 'create projects']),
+            Permission::create(['name' => 'update projects']),
+            Permission::create(['name' => 'delete projects']),
+            Permission::create(['name' => 'create task']),
+            Permission::create(['name' => 'update task']),
+            Permission::create(['name' => 'delete task']),
+        ];
+
+        $adminRole->syncPermissions($adminPermissions);
+        $teamLeader->syncPermissions($teamPermissions);
     }
 }

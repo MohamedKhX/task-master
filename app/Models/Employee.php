@@ -60,7 +60,6 @@ class Employee extends Model
     {
         return $this->hasMany(Assignment::class, 'employee_id');
     }
-
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);

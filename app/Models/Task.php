@@ -68,4 +68,31 @@ class Task extends Model
     {
         return $this->belongsTo(Employee::class, 'created_by');
     }
+
+    public function syncTags($tagNames): void
+    {
+
+        // Retrieve the existing tag IDs based on the tag names
+        $existingTags = Tag::whereIn('name', $tagNames)->get();
+
+        // Get the existing tag names
+        $existingTagNames = $existingTags->pluck('name')->toArray();
+
+        // Create new tags for the names that don't have corresponding tags
+        $newTagNames = array_diff($tagNames, $existingTagNames);
+        $newTags = [];
+
+        foreach ($newTagNames as $newTagName) {
+            try {
+                $newTags[] = Tag::create(['name' => $newTagName]);
+
+            } catch (\Exception $exception) {}
+        }
+
+        // Combine the existing and new tags
+        $tags = $existingTags->concat($newTags);
+
+        // Sync the tag IDs with the task model
+        $this->tags()->sync($tags->pluck('id')->toArray());
+    }
 }

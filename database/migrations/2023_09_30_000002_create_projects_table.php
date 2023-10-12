@@ -21,10 +21,8 @@ return new class extends Migration
             $table->timestamp('end_date')->nullable();
             $table->timestamps();
 
-            $table->foreignId('created_by');
             $table->foreignId('team_id');
 
-            $table->foreign('created_by')->references('id')->on('employees');
             $table->foreign('team_id')->references('id')->on('teams');
         });
     }

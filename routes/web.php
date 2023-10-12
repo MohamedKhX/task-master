@@ -19,27 +19,23 @@ use Laravolt\Avatar\Facade as Avatar;
 |
 */
 
+
 Route::get('/', function () {
     return redirect(\route('dashboard'));
 });
 
-/*
- * For authtecaitd users
- * */
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])
     ->group(function () {
 
-        /*
-         * For Admin users
-         * */
+        /* For Admins */
         Route::middleware(['role:admin'])->group(function () {
             Route::get('dashboard/employee', [EmployeesController::class, 'index'])->name('employee.index');
             Route::get('dashboard/team',     [TeamsController::class, 'index'])->name('team.index');
         });
 
-        Route::resource('dashboard/project',  ProjectController::class);
 
-        Route::get('dashboard', [DashboardController::class, 'overview'])->name('dashboard');
-        Route::get('dashboard/inbox', InboxController::class)->name('inbox');
-        Route::get('dashboard/employee/{employee:id}', [EmployeesController::class, 'show'])->name('employee.show');
+        Route::get(       'dashboard',             DashboardController::class)->name('dashboard');
+        Route::resource('dashboard/project',  ProjectController::class)->only('index', 'show');
+        Route::get(       'dashboard/inbox',       InboxController::class)->name('inbox');
+        Route::get(       'dashboard/employee/{employee:id}', [EmployeesController::class, 'show'])->name('employee.show');
 });

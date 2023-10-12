@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Employee;
+use App\Models\Project;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,8 +18,8 @@ class TaskFactory extends Factory
             'description' => $this->faker->optional()->text,
             'priority' => $this->faker->randomElement(['Low', 'High', 'Critical']),
             'status' => $this->faker->randomElement(['Completed', 'In Progress', 'Pending']),
-            'created_by' => 1,
-            'project_id' => $this->faker->optional()->numberBetween(1, 10),
+            'created_by' => Employee::factory()->create()->id,
+            'project_id' => Project::factory()->create()->id,
             'start_date' => $this->faker->optional()->dateTime(),
             'end_date' => $this->faker->optional()->dateTime(),
         ];

@@ -62,17 +62,13 @@
             {{-- Start Tags Input --}}
             <div>
                 <div x-data class="mt-2">
-                    <div @assign-tags.window="init($event.detail)" x-data="tagSelect()" @click.away="clearSearch()" @keydown.escape="clearSearch()">
-                        <div class="relative" @keydown.enter.prevent="addTag(textInput)">
-                            <input x-model="textInput" x-ref="textInput" @input="search($event.target.value)" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter some tags">
-{{--
-                            <input type="text" x-model="tags" x-init="$watch('tags', value => $wire.set('tags', value));">
---}}
-                            <input type="text" wire:model.defer="task_tags" x-data="{ tags: @entangle('task_tags').defer }">
+                    <div @assign-tags.window="init($event.detail)" x-data="tagSelect()" @click.away="clearSearch()" @keydown.escape="clearSearch(); @this.task_tags = JSON.stringify(tags)">
+                        <div class="relative" @keydown.enter.prevent="addTag(textInput); @this.task_tags = JSON.stringify(tags)">
+                            <input x-model="textInput" x-ref="textInput" @input="search($event.target.value); " class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter some tags">
                             <div :class="[open ? 'block' : 'hidden']">
                                 <div class="absolute z-40 left-0 mt-2 w-full">
                                     <div class="py-1 text-sm bg-white rounded shadow-lg border border-gray-300">
-                                        <a @click.prevent="addTag(textInput)" class="block py-1 px-5 cursor-pointer hover:bg-indigo-600 hover:text-white">Add tag "<span class="font-semibold" x-text="textInput"></span>"</a>
+                                        <a @click.prevent="addTag(textInput); @this.task_tags = JSON.stringify(tags)" class="block py-1 px-5 cursor-pointer hover:bg-indigo-600 hover:text-white">Add tag "<span class="font-semibold" x-text="textInput"></span>"</a>
                                     </div>
                                 </div>
                             </div>
@@ -80,7 +76,7 @@
                             <template x-for="(tag, index) in tags">
                                 <div class="bg-indigo-100 inline-flex items-center text-sm rounded mt-2 mr-1">
                                     <span class="ml-2 mr-1 leading-relaxed truncate max-w-xs" x-text="tag"></span>
-                                    <button @click.prevent="removeTag(index)" class="w-6 h-8 inline-block align-middle text-gray-500 hover:text-gray-600 focus:outline-none">
+                                    <button @click.prevent="removeTag(index); @this.task_tags = JSON.stringify(tags)" class="w-6 h-8 inline-block align-middle text-gray-500 hover:text-gray-600 focus:outline-none">
                                         <svg class="w-6 h-6 fill-current mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M15.78 14.36a1 1 0 0 1-1.42 1.42l-2.82-2.83-2.83 2.83a1 1 0 1 1-1.42-1.42l2.83-2.82L7.3 8.7a1 1 0 0 1 1.42-1.42l2.83 2.83 2.82-2.83a1 1 0 0 1 1.42 1.42l-2.83 2.83 2.83 2.82z"/></svg>
                                     </button>
                                 </div>

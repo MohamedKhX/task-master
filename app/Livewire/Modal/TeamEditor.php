@@ -60,7 +60,7 @@ class TeamEditor extends Component
 
     public function createTeam(): bool
     {
-        $this->authorize('update', Team::class);
+        $this->authorize('create', Team::class);
 
         $team = Team::create([
             'name'       => $this->name,

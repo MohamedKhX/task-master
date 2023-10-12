@@ -16,7 +16,6 @@ use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 final class Inbox extends PowerGridComponent
 {
     public string $sortField = 'created_at';
-
     public string $sortDirection = 'desc';
 
     public function template(): ?string

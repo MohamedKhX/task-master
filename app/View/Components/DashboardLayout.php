@@ -15,6 +15,7 @@ class DashboardLayout extends Component
     public function render(): View
     {
         $employee = auth()->user()->employee;
+
         $team     = $employee->team;
 
         $members  = $team?->members;

@@ -24,7 +24,6 @@ final class Employees extends PowerGridComponent
     use Actions;
 
     public string $sortField = 'created_at';
-
     public string $sortDirection = 'desc';
 
     public $listeners = ['employee-created', 'employee-updated'];

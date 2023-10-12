@@ -12,9 +12,7 @@ trait TableFilters
     public Collection $filteredData;
 
     public ?string $filterTasks = null;
-
     public ?string $filterStatus = null;
-
     public array $filterTags = [];
 
     public Collection $tags;

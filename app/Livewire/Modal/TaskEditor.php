@@ -35,7 +35,6 @@ class TaskEditor extends Component
     public ?string $task_end_date    = null;
     public ?string $task_tags        = null;
 
-    public array $tags = [];
     public array   $task_assignments = [];
 
     public ?string $task_parent_id = null;
@@ -123,7 +122,9 @@ class TaskEditor extends Component
             'parent_id'  => $this->task_parent_id
         ]);
 
-        $task->tags()->sync($this->task_tags);
+        $tags = json_decode($this->task_tags);
+
+        $task->syncTags($tags);
         $task->assignments()->sync($this->task_assignments);
 
         if($this->task_assignments) {
@@ -142,7 +143,6 @@ class TaskEditor extends Component
 
     public function updateTask(): bool
     {
-        dd($this->tags);
 
         $this->authorize('update', $this->task);
 
@@ -155,7 +155,9 @@ class TaskEditor extends Component
             'description' => $this->task_description,
         ]);
 
-        $this->task->tags()->sync($this->task_tags);
+        $tags = json_decode($this->task_tags);
+
+        $this->task->syncTags($tags);
         $this->task->assignments()->sync($this->task_assignments);
 
         if($this->task_assignments) {
@@ -186,7 +188,7 @@ class TaskEditor extends Component
             'priorities' => TaskPriority::getValues(),
             'status'     => TaskStatus::getValues(),
             'tags'       => Tag::all(),
-            'members'   => $this->project->team->members
+            'members'    => $this->project->team->members
         ]);
     }
 

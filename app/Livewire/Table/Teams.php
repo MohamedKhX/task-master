@@ -24,11 +24,9 @@ final class Teams extends PowerGridComponent
     use Actions;
 
     public string $sortField = 'created_at';
-
     public string $sortDirection = 'desc';
 
     public $listeners = ['team-created', 'team-updated'];
-
 
     public function deleteTeam(Team $team): void
     {

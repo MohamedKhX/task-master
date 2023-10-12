@@ -23,11 +23,9 @@ final class Projects extends PowerGridComponent
     use Actions;
 
     public string $sortField = 'created_at';
-
     public string $sortDirection = 'desc';
 
     public $listeners = ['project-created', 'project-updated'];
-
 
     public function deleteProject(Project $project): void
     {
@@ -110,10 +108,6 @@ final class Projects extends PowerGridComponent
         ];
     }
 
-
-    /*
-   * Custom Template.
-   * */
     public function template(): ?string
     {
         return PowerGridTheme::class;
@@ -176,8 +170,6 @@ final class Projects extends PowerGridComponent
             Column::make('End Date', 'end_date')
                 ->searchable()
                 ->sortable(),
-
-
 
             Column::action('Action')
         ];

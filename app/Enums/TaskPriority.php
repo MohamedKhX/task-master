@@ -8,7 +8,6 @@ enum TaskPriority: string
     case HIGH     = 'High';
     case Critical = 'Critical';
 
-
     public static function getValues(): array
     {
         return [

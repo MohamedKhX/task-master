@@ -10,9 +10,7 @@ class SubTasks extends Component
 {
     public ?Task $task = null;
 
-    protected $listeners = [
-        'showSubTasks'
-    ];
+    protected $listeners = ['showSubTasks'];
 
     public function showSubTasks($taskId): void
     {
