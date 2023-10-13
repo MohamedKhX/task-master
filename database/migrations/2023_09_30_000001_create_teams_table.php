@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('department', 60);
             $table->timestamps();
 
-            $table->foreignId('created_by');
+            $table->foreignId('created_by')->nullable();
+
+            $table->index('created_by');
 
             $table->foreign('created_by')->references('id')->on('employees');
         });

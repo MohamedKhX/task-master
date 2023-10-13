@@ -4,6 +4,7 @@ namespace App\Livewire\Modal;
 
 use App\Enums\ProjectStatus;
 use App\Models\Project;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -64,6 +65,8 @@ class ProjectEditor extends Component
     public function saveProject(): bool
     {
         $this->validate();
+
+        Cache::forget('team_projects_' . auth()->user()->employee?->team?->id);
 
         if ($this->editMode) {
             return $this->updateProject();

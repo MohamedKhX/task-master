@@ -52,6 +52,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $with = [
+        'employee'
+    ];
+
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);

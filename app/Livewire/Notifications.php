@@ -16,6 +16,12 @@ class Notifications extends Component
 
     public function render()
     {
-        return view('livewire.notifications');
+        $notifications       = $this->employee->notifications()->limit(20)->get();
+        $unReadNotifications = $notifications->where('read_at', '=', null);
+
+        return view('livewire.notifications', [
+            'notifications'       => $notifications,
+            'unReadNotifications' => $unReadNotifications
+        ]);
     }
 }

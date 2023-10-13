@@ -23,6 +23,8 @@ return new class extends Migration
 
             $table->foreignId('team_id');
 
+            $table->index('team_id');
+
             $table->foreign('team_id')->references('id')->on('teams');
         });
     }

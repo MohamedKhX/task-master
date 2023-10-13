@@ -26,6 +26,8 @@ return new class extends Migration
             $table->timestamp('end_date')->nullable();
             $table->timestamps();
 
+            $table->index('created_by');
+
             $table->foreign('project_id')->references('id')->on('projects')->onDelete('set null');
             $table->foreign('parent_id')->references('id')->on('tasks')->onDelete('set null');
         });

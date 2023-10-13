@@ -4,7 +4,9 @@ namespace App\Livewire\Table\Traits;
 
 use App\Models\Project;
 use App\Models\Tag;
+use Exception;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Url;
 
 trait TableFilters
@@ -20,7 +22,10 @@ trait TableFilters
     public function mount(): void
     {
         parent::mount();
-        $this->tags = Tag::all();
+
+        $this->tags = Cache::remember('tags', 3600, function () {
+            return Tag::all();
+        });
     }
 
     public function updatedFilterTasks(): void
@@ -38,12 +43,19 @@ trait TableFilters
         $this->filterData();
     }
 
+
     public function filterData(): void
     {
         if($this->project) {
             $data = $this->project->tasksWithoutSubTasks();
+        } else if($this->task) {
+            $data = $this->task->subTasks()->with('tags');
+        } else if($this->employee) {
+            $data = $this->employee->tasksWithOutSubTasks()->with('project', function ($query) {
+                $query->select('id', 'name');
+            });
         } else {
-            $data = $this->task->subTasks();
+            throw new Exception('Please Provide date to filter and render');
         }
 
         $this->filteredData = $data

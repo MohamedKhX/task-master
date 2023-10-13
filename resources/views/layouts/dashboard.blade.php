@@ -65,10 +65,10 @@
                 @endrole
 
             </x-dashboard.sidebar_menu_group>
-            @if($projects)
+            @if($signedInTeamProjects)
                 <x-dashboard.sidebar_menu_group title="Our Projects">
 
-                    @forelse($projects as $project)
+                    @forelse($signedInTeamProjects as $project)
                         <x-dashboard.sidebar_menu_item
                             name="{{ $project->name }}"
                             icon-name="check-circle"
@@ -89,10 +89,10 @@
             @endif
             <x-dashboard.sidebar_menu_group title="Team Members">
                 <x-dashboard.sidebar_menu_item class="flex items-center justify-start ml-4" type="empty">
-                    @if($team)
+                    @if($signedInTeam)
                         <div class="flex justify-center items-center flex-col gap-4 2xsm:flex-row 2xsm:items-center">
                             <div class="flex flex-wrap gap-2">
-                                @foreach($members as $member)
+                                @foreach($signedInTeamMembers as $member)
                                     <a wire:navigate href="{{ route('employee.show', $member) }}" class="h-8 w-8 rounded-full border-2 border-white dark:border-boxdark">
                                         <img src="{{ asset($member?->avatar_path)}}" alt="User">
                                     </a>

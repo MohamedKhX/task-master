@@ -103,9 +103,9 @@ final class Teams extends PowerGridComponent
         ];
     }
 
-    public function datasource(): Collection
+    public function datasource()
     {
-        return Team::all();
+        return Team::with('members')->get();
     }
 
     public function addColumns(): PowerGridColumns

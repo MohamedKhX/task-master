@@ -23,6 +23,9 @@ return new class extends Migration
 
             $table->foreign('user_id')->references('id')->on('users');
 
+            $table->index('team_id');
+            $table->index('user_id');
+
             $table->timestamps();
         });
     }

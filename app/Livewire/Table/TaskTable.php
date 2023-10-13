@@ -3,6 +3,7 @@
 namespace App\Livewire\Table;
 
 use App\Livewire\Table\Traits\TableFilters;
+use App\Models\Employee;
 use App\Models\Project;
 use App\Models\Task;
 use App\PowerGridThemes\PowerGridTheme;
@@ -29,6 +30,8 @@ abstract class TaskTable extends PowerGridComponent
     public ?Project $project = null;
 
     public ?Task $task = null;
+
+    public ?Employee $employee = null;
 
     public string $sortField = 'created_at';
 
@@ -103,6 +106,11 @@ abstract class TaskTable extends PowerGridComponent
             })
             ->addColumn('DueTime', function (Task $task) {
                 return Blade::renderComponent(new DueDate($task ));
+            })
+            ->addColumn('project_name', function (Task $task) {
+                if(! $this->employee) return null;
+
+                return $task->project->name;
             });
     }
 
@@ -145,12 +153,19 @@ abstract class TaskTable extends PowerGridComponent
 
         ];
 
-        if($this->project) {
+        if($this->project || $this->employee) {
             array_unshift($columns,
                 Column::add()
                     ->title('SubTasks')
                     ->field('Details')
                     ->headerAttribute('text-center'));
+        }
+
+        if($this->employee) {
+            $columns[] = Column::add()
+                ->title('Project')
+                ->field('project_name')
+                ->headerAttribute('text-center');
         }
 
         return $columns;

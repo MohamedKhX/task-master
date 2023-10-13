@@ -52,7 +52,7 @@
                     wire:model="task_assignments"
                     multiselect
                 >
-                    @foreach($members as $member)
+                    @foreach($signedInTeamMembers ?? [] as $member)
                         <x-select.option :label="$member->name" :value="$member->id" />
                     @endforeach
                 </x-select>

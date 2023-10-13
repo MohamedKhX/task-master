@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\File;
 use JetBrains\PhpStorm\NoReturn;
@@ -27,11 +28,6 @@ class Employee extends Model
         'job_role',
         'bio',
         'avatar_path'
-    ];
-
-    protected $with = [
-        'user',
-        'team:id,name'
     ];
 
     protected static function boot(): void
@@ -63,6 +59,24 @@ class Employee extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    public function tasks(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Task::class,
+            Assignment::class,
+            'employee_id',
+            'id',
+            'id',
+            'task_id'
+        );
+    }
+
+    public function tasksWithOutSubTasks(): HasManyThrough
+    {
+        return $this->tasks()
+            ->whereNull('parent_id');
     }
 
     public function completedTasks(): int

@@ -11,6 +11,7 @@ use App\Models\Task;
 use App\Notifications\AssignedTask;
 use Closure;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Enum;
@@ -21,7 +22,7 @@ class TaskEditor extends Component
 {
     use Actions;
 
-    public Project $project;
+    public ?Project $project = null;
 
     //Only on Edit Mode
     public bool $editMode = false;
@@ -94,9 +95,8 @@ class TaskEditor extends Component
     {
         $this->validate();
 
-        if($this->editMode) {
+        if($this->editMode)
            return $this->updateTask();
-        }
 
         return $this->createTask();
     }
@@ -187,8 +187,6 @@ class TaskEditor extends Component
         return view('livewire.modal.task-editor', [
             'priorities' => TaskPriority::getValues(),
             'status'     => TaskStatus::getValues(),
-            'tags'       => Tag::all(),
-            'members'    => $this->project->team->members
         ]);
     }
 

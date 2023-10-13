@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * @method static create(array $array)
@@ -71,6 +72,7 @@ class Task extends Model
 
     public function syncTags($tagNames): void
     {
+        if(is_null($tagNames)) return;
 
         // Retrieve the existing tag IDs based on the tag names
         $existingTags = Tag::whereIn('name', $tagNames)->get();
@@ -94,5 +96,7 @@ class Task extends Model
 
         // Sync the tag IDs with the task model
         $this->tags()->sync($tags->pluck('id')->toArray());
+
+        Cache::forget('tags');
     }
 }

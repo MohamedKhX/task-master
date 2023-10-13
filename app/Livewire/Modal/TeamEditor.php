@@ -105,7 +105,7 @@ class TeamEditor extends Component
     public function render()
     {
         return view('livewire.modal.team-editor', [
-            'employees' => Employee::all()
+            'employees' => Employee::limit(50)->get()
         ]);
     }
 }

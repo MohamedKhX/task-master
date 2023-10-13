@@ -56,9 +56,9 @@ final class Employees extends PowerGridComponent
         return PowerGridTheme::class;
     }
 
-    public function datasource(): ?Collection
+    public function datasource()
     {
-        return Employee::all();
+        return Employee::with('team', 'user.roles')->get();
     }
 
     public function setUp(): array

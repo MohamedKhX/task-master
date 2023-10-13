@@ -8,11 +8,12 @@
             @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false"
             wire:click="markAsRead"
         >
-            @if(! $employee->unreadNotifications->isEmpty())
+            @if(! $unReadNotifications->isEmpty())
                 <span :class="!notifying && 'hidden'" class="absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1">
-                            <span
-                                class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
-                            </span>
+                        <span class="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75">
+                        </span>
+                </span>
+
             @endif
 
             <svg class="fill-current duration-300 ease-in-out" width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -31,7 +32,7 @@
             </div>
 
             <ul class="flex h-auto flex-col overflow-y-auto">
-                @forelse($employee->notifications as $notification)
+                @forelse($notifications as $notification)
                     <li>
                         <a class="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
                            href="#">

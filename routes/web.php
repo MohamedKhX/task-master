@@ -19,10 +19,7 @@ use Laravolt\Avatar\Facade as Avatar;
 |
 */
 
-
-Route::get('/', function () {
-    return redirect(\route('dashboard'));
-});
+Route::redirect('/', '/dashboard');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',])
     ->group(function () {
@@ -32,7 +29,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
             Route::get('dashboard/employee', [EmployeesController::class, 'index'])->name('employee.index');
             Route::get('dashboard/team',     [TeamsController::class, 'index'])->name('team.index');
         });
-
 
         Route::get(       'dashboard',             DashboardController::class)->name('dashboard');
         Route::resource('dashboard/project',  ProjectController::class)->only('index', 'show');
